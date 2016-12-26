@@ -1,0 +1,101 @@
+@charset "utf-8";
+/* --
+
+title: CSS 전역 공통 설정
+
+desc: 전 페이지의 공통된 CSS설정을 정의함.
+
+
++ 각 요소에 수치적인 값이 있는 경우는 항상 단위를 표기한다.
++ 아이디명이나 클래스명은 모두가 인지하기 쉽도록 관련된 네이밍을 가진다.
++ 아이디는 하나의 페이지 안에 단하나의 유일한 아이디 만이 존재한다. 클래스는 동일한 명의 클래스가 다수 존재 가능하다.
++ 아이디는 앞에 (#)을 표기하고 클래스는 앞에 (.)을 표기한다
+
+-- */
+*{
+    margin:0;
+    padding:0;
+}
+body{
+    margin:0;
+    padding:0;
+
+}
+
+h1, h2, h3, h4, h5, h6{ /* h는 기본적으로 큰 폰트사이즈와 bold 속성을 갖는다 */
+    font-size:100%; /* 폰트사이즈를 기본 사이즈로 맞춤 */
+    margin:0px 0px 0px 0px; /* 기본적으로 각 브라우저마다 고유한 마진값을 부여한다 */
+}
+
+p, ul, ol, li, dl, dt, dd, form, fieldset{ /* 기본적으로 각 브라우저마다 고유한 마진값과 패딩값을 지니므로 초기화 */
+    margin:0px 0px 0px 0px;
+    padding:0px 0px 0px 0px;
+    font-size:100%;
+    border:0px none;
+}
+
+ul, ol, li{ /* 기본적으로 각 브라우저마다 고유한 리스트 스타일(불릿)을 가지고 있으므로 초기화 */
+    list-style:none;
+    font-size:100%;
+}
+
+
+table{ /* 기본적으로 테이블의 셀간의 마진이 존재하므로 초기화 */
+    border-collapse:collapse;
+    font-size:100%;
+}
+
+th, td{ /* 기본적으로 th는 bold속성과 align:center 속성을 갖는다 */
+    vertical-align:top;
+}
+
+a{
+    text-decoration:none;
+    font-size:100%;
+}
+
+a:visited{
+    text-decoration:none;
+}
+
+a:hover{ /* a의 속성을 지정할때는 항상 hover 속성을 마지막으로 설정해야 한다 */
+    text-decoration:none;
+}
+
+img{
+    border:0px none;
+    font-size:0px;
+    vertical-align:top;
+}
+
+input{
+    vertical-align:top;
+    font-size:100%;
+    font-family:"돋움",Dotum,"굴림",Gulim,arial,serif,sans-serif;
+}
+
+iframe{
+    border:0px none;
+}
+
+/* -------- 공통적인 속성을 가지는 요소에 미리 만들어진 클래스를 적용하여 CSS 구문을 최소화 한다. ------------- */
+
+.blind,legend,caption,#accessibility {	/* 실제로는 보이지 않지만 스크린 리더기로 읽혀져지는 콘텐츠. */
+    width:0px;
+    height:0px;
+    position:absolute;
+    overflow:hidden;
+    font-size:0px;
+    line-height:0px;
+    z-index:-1;
+    visibility:hidden;
+}
+
+.hidden,hr{ /* 스크린 리더기로 읽혀지지 않고 실제로도 보여지지 않는 콘텐츠. */
+    visibility:hidden;
+}
+
+.nobg{
+    background-image:none !important;
+}
+

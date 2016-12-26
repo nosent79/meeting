@@ -1,0 +1,125 @@
+@charset "utf-8";
+
+/* --
+
+title: CSS 설정
+
+desc: 페이지의 CSS설정을 정의함.
+
+
++ 각 요소에 수치적인 값이 있는 경우는 항상 단위를 표기한다.
++ 아이디명이나 클래스명은 모두가 인지하기 쉽도록 관련된 네이밍을 가진다.
++ 아이디는 하나의 페이지 안에 단하나의 유일한 아이디 만이 존재한다. 클래스는 동일한 명의 클래스가 다수 존재 가능하다.
++ 아이디는 앞에 (#)을 표기하고 클래스는 앞에 (.)을 표기한다
+
+-- */
+
+/* layout */
+#endingwrap{background:url(../images/ending_bg.jpg) no-repeat center top;}
+#endingwrap #con{position:relative;width:1120px;margin:0 auto;background:url('') no-repeat center top;}
+
+/* checkbox 이미지 */
+.a img{width:134px;height:134px;opacity:0;}
+.a label{display:none;}
+
+.ending_1{padding-top:150px;height:771px;background:url('') no-repeat 0 0;}
+
+.ending_1 ul{overflow:hidden;}
+.ending_1 input[type=text]{width:345px;height:62px;padding-left:20px;font-size:15px;border:0;}
+.ending_1 li{float:left;width:365px;height:62px;margin:0 0 18px 156px;}
+.ending_1 .in1,.ending_1 .in3,.ending_1 .in5,.ending_1 .in7{margin-right:48px;}
+.ending_1 .in7{margin-right:48px;}
+.ending_1 .in7 input{width:108px;text-align:center;margin-right:20px;padding:0;}
+.ending_1 .in7 input.last{margin-right:0}
+.ending_1 .in10{width:412px;}
+
+.ending_1 .chk1 img{width:64px;height:64px;margin-right:17px;background:transparent url(../images/radio_11.png) no-repeat center 50%;}
+.ending_1 .chk2 img{width:64px;height:64px;background:transparent url(../images/radio_12.png) no-repeat center 50%;}
+.ending_1 .chk1-checked img{width:64px;height:64px;background:transparent url(../images/radioed_11.png) no-repeat center 50%;}
+.ending_1 .chk2-checked img{width:64px;height:64px;background:transparent url(../images/radioed_12.png) no-repeat center 50%;}
+
+p.agree1{clear:both;height:39px;margin:20px 0 0 37px;}
+div.agtxt{float:left;margin-left:37px;margin-bottom:56px;}
+div.agtxt div{width:502px;height:109px;margin-bottom:15px;overflow-y:scroll;background:#fff;}
+p.btn{clear:both;text-align:center;}
+p.btn img{margin:0 58px;}
+
+.ending_1 .ag img{width:250px;height:23px;margin-right:17px;background:transparent url(../images/check.gif) no-repeat 0 50%;}
+.ending_1 .ag-checked img{width:250px;height:23px;margin-right:17px;background:transparent url(../images/checked.gif) no-repeat 0 50%;}
+
+.ending_1 .ag1 img{width:420px;height:29px;margin-right:17px;background:transparent url(../images/check.gif) no-repeat 0 50%;}
+.ending_1 .ag1-checked img{width:420px;height:29px;margin-right:17px;background:transparent url(../images/checked.gif) no-repeat 0 50%;}
+
+.ending_1 div.select{position:relative;}
+
+/* setting the width and height of the SELECT element to match the replacing graphics */
+.ending_1 select.select{
+    position:relative;
+    z-index:10;
+    width:365px !important;
+    height:62px !important;
+    font-size:15px;
+    line-height:62px;
+}
+
+/* dynamically created SPAN, placed below the SELECT */
+.ending_1 span.select{
+    position:absolute;
+    bottom:0;
+    float:left;
+    left:0;
+    width:365px;
+    height:62px;
+    line-height:62px;
+    text-indent:20px;
+    font-size:15px;
+    background:url(../images/select.gif) no-repeat 0 0;
+    cursor:default;
+    z-index:1;
+}
+
+
+
+.ending_1 div.select-etc {position:relative; float:left; width:150px; }
+
+/* setting the width and height of the SELECT element to match the replacing graphics */
+.ending_1 select.select-etc {
+    position:relative;
+    z-index:10;
+    width:170px !important;
+    height:62px !important;
+    font-size:15px;
+    line-height:62px;
+}
+
+/* dynamically created SPAN, placed below the SELECT */
+.ending_1 span.select-etc{
+    position:absolute;
+    bottom:0;
+    float:left;
+    left:0;
+    width:150px;
+    height:62px;
+    line-height:62px;
+    text-indent:20px;
+    font-size:15px;
+    background:url(../images/select.gif) no-repeat right top;
+    cursor:default;
+    z-index:1;
+}
+
+
+@font-face {
+    font-family:'Nanum Gothic';
+    font-style: normal;
+    font-weight:800;
+    src:url('../font/NanumGothic-Regular.eot');
+    src:url('../font/NanumGothic-Regular.eot?#iefix') format('embedded-opentype'), url('../font/NanumGothic-Regular.woff2') format('woff2'), url('../font/NanumGothic-Regular.woff') format('woff'), url('../font/NanumGothic-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family:'Nanum Gothic Bold';
+    font-style:normal;
+    font-weight:700;
+    src:url('../font/NanumGothic-Bold.eot');
+    src:url('../font/NanumGothic-Bold.eot?#iefix') format('embedded-opentype'), url('../font/NanumGothic-Bold.woff2') format('woff2'), url('../font/NanumGothic-Bold.woff') format('woff'), url('../font/NanumGothic-Bold.ttf') format('truetype');
+}
