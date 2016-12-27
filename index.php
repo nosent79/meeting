@@ -276,8 +276,8 @@
                             </div>
                         </li>
                         <li class="in3">
-                            <input type="radio" id="u_sex1" name="u_ident2" value="1" title="남" />
-                            <input type="radio" id="u_sex2" name="u_ident2" value="2" title="여" />
+                            <input type="radio" id="u_sex1" name="u_ident2" value="M" title="남" />
+                            <input type="radio" id="u_sex2" name="u_ident2" value="F" title="여" />
                         </li>
                         <li class="in4">
                             <div class="select">

@@ -2,16 +2,16 @@
 /**
  * Created by PhpStorm.
  * User: 최진욱
- * Date: 2016-12-14
- * Time: 오후 12:18
+ * Date: 2016-12-27
+ * Time: 오후 7:12
  */
+
 define('DB_HOST', 'localhost');
-define('DB_USER', 'jerry');
-define('DB_PASS', 'Wlsnrl0805*');
-define('DB_NAME', 'meeting');
+define('DB_USER', '');
+define('DB_PASS', '');
+define('DB_NAME', '');
 define('SITE_URL', 'http://localhost');
 define('SITE_PORT', ':8585');
-define('SITE_SHORT_URL', 'http://localhost/api/v1/createShortURL.php');
 define('SITE_TITLE', '1:1 미팅 시스템');
 define('VERSION', '1.0.0');
 

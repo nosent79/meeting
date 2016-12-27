@@ -26,6 +26,7 @@ desc: 페이지의 CSS설정을 정의함.
 
 .ending_1 ul{overflow:hidden;}
 .ending_1 input[type=text]{width:345px;height:62px;padding-left:20px;font-size:15px;border:0;}
+.ending_1 input[type=password]{width:345px;height:62px;padding-left:20px;font-size:25px;border:0;}
 .ending_1 li{float:left;width:365px;height:62px;margin:0 0 18px 156px;}
 .ending_1 .in1,.ending_1 .in3,.ending_1 .in5,.ending_1 .in7{margin-right:48px;}
 .ending_1 .in7{margin-right:48px;}

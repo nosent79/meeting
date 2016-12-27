@@ -31,3 +31,7 @@
     {
         header("Location: ". $url, true, 301);
     }
+
+    function getAges($ages) {
+        return date("Y") - $ages + 1;
+    }
