@@ -642,4 +642,34 @@
 
             return $result['expire_dt'];
         }
+
+
+
+
+        public function test1()
+        {
+            $sql = " insert into test1 ( t1 ) values ( 'a' )";
+            $this->query($sql);
+            $this->execute();
+
+            return true;
+        }
+        public function test2()
+        {
+            $sql = " insert into test2 ( t1 ) values ( 'aaaaaa' )";
+            $this->query($sql);
+            $this->execute();
+
+            return true;
+        }
+        public function test3()
+        {
+            $sql = " insert into test3 ( t1 ) values ( a, b )";
+            $this->query($sql);
+            $this->execute();
+
+            return true;
+        }
     }
+
+
