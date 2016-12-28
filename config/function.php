@@ -27,9 +27,26 @@
         return false;
     }
 
+    function isMember()
+    {
+        if (isset($_SESSION['m_id'])) {
+            return true;
+        }
+
+        return false;
+    }
+
     function redirectSiteURL($url)
     {
         header("Location: ". $url, true, 301);
+        exit;
+    }
+
+    function redirectSiteURLwithAlert($url, $msg)
+    {
+        echo "<script>alert($msg)</script>";
+        header("Location: ". $url, true, 301);
+        exit;
     }
 
     function getAges($ages) {

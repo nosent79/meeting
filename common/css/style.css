@@ -15,14 +15,15 @@ desc: 페이지의 CSS설정을 정의함.
 -- */
 
 /* layout */
-#endingwrap{background:url(../images/ending_bg.jpg) no-repeat center top;}
+/*#endingwrap{background:url('') no-repeat center top;}*/
+#endingwrap{background-color:#cccccc;}
 #endingwrap #con{position:relative;width:1120px;margin:0 auto;background:url('') no-repeat center top;}
 
 /* checkbox 이미지 */
 .a img{width:134px;height:134px;opacity:0;}
 .a label{display:none;}
 
-.ending_1{padding-top:150px;height:771px;background:url('') no-repeat 0 0;}
+.ending_1{padding-top:100px;height:771px;background:url('') no-repeat 0 0;}
 
 .ending_1 ul{overflow:hidden;}
 .ending_1 input[type=text]{width:345px;height:62px;padding-left:20px;font-size:15px;border:0;}
@@ -32,6 +33,7 @@ desc: 페이지의 CSS설정을 정의함.
 .ending_1 .in7{margin-right:48px;}
 .ending_1 .in7 input{width:108px;text-align:center;margin-right:20px;padding:0;}
 .ending_1 .in7 input.last{margin-right:0}
+.ending_1 .in8 .empty {width:30px;height:62px;font-size:15px;border:0; background-color: #000;}
 .ending_1 .in10{width:412px;}
 
 .ending_1 .chk1 img{width:64px;height:64px;margin-right:17px;background:transparent url(../images/radio_11.png) no-repeat center 50%;}
@@ -44,6 +46,8 @@ div.agtxt{float:left;margin-left:37px;margin-bottom:56px;}
 div.agtxt div{width:502px;height:109px;margin-bottom:15px;overflow-y:scroll;background:#fff;}
 p.btn{clear:both;text-align:center;}
 p.btn img{margin:0 58px;}
+
+p.btnComplete{clear:both;text-align:center;}
 
 .ending_1 .ag img{width:250px;height:23px;margin-right:17px;background:transparent url(../images/check.gif) no-repeat 0 50%;}
 .ending_1 .ag-checked img{width:250px;height:23px;margin-right:17px;background:transparent url(../images/checked.gif) no-repeat 0 50%;}
@@ -123,4 +127,26 @@ p.btn img{margin:0 58px;}
     font-weight:700;
     src:url('../font/NanumGothic-Bold.eot');
     src:url('../font/NanumGothic-Bold.eot?#iefix') format('embedded-opentype'), url('../font/NanumGothic-Bold.woff2') format('woff2'), url('../font/NanumGothic-Bold.woff') format('woff'), url('../font/NanumGothic-Bold.ttf') format('truetype');
+}
+
+/**
+버튼 속성 추가
+ */
+.button {
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.green {
+    background-color: #4CAF50; /* Green */
+}
+
+.red {
+    background-color: #f00; /* Green */
+
 }

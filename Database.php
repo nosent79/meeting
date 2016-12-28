@@ -1,10 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: 최진욱
- * Date: 2016-12-14
- * Time: 오후 4:51
- */
+    /**
+     * Created by PhpStorm.
+     * User: 최진욱
+     * Date: 2016-12-14
+     * Time: 오후 4:51
+     */
     require_once "config/config.php";
     require_once "config/function.php";
 
@@ -224,41 +224,197 @@
             return $this->single()['point'];
         }
 
+        /**
+         * 회원정보 저장
+         * 
+         * @param $request
+         * @return string
+         */
         public function insertMemberInfo($request)
         {
 
-            $cellphone = $request['u_hp1'].$request['u_hp2'].$request['u_hp3'];
-
             $sql = "
             insert into tbl_member ( 
-                name, password, birth_year, sex, location, education, job, salary, hobby, cellphone, admin_flag 
-            ) values ( :
-                :name, :password, :birth_year, :sex, :location, :education, :job, :salary, :hobby, :cellphone, :admin_flag
+                name, email, password, birth_year, sex, location, education, job, salary, hobby, cellphone, admin_flag 
+            ) values (
+                :name, :email, :password, :birth_year, :sex, :location, :education, :job, :salary, :hobby, :cellphone, 'N'
+            )
             ";
 
             $this->query($sql);
-            $this->bind(":name", $request['u_name']);
-            $this->bind(":password", password_hash($request['u_pwd1']));
-            $this->bind(":birth_year", $request['u_ident1']);
-            $this->bind(":sex", $request['u_ident2']);
-            $this->bind(":location", $request['u_location']);
-            $this->bind(":education", $request['u_edu']);
-            $this->bind(":job", $request['u_work']);
-            $this->bind(":salary", $request['u_salary']);
-            $this->bind(":hobby", $request['u_hobby']);
-            $this->bind(":cellphone", $cellphone);
-            $this->bind(":admin_flag", "N");
+            $this->bind(":name", $request['name']);
+            $this->bind(":email", $request['email']);
+            $this->bind(":password", $request['password']);
+            $this->bind(":birth_year", $request['birth_year']);
+            $this->bind(":sex", $request['sex']);
+            $this->bind(":location", $request['location']);
+            $this->bind(":education", $request['education']);
+            $this->bind(":job", $request['job']);
+            $this->bind(":salary", $request['salary']);
+            $this->bind(":hobby", $request['hobby']);
+            $this->bind(":cellphone", $request['cellphone']);
             $this->execute();
 
             return $this->lastInsertId();
         }
 
-        public function insertMemberWeight()
+        /**
+         * 더미 데이터 (회원정보)
+         *
+         * @return string
+         */
+        public function testInsertMemberInfo()
         {
+//            for ($i=1; $i<=100; $i++) {
+//                $sql = "
+//                    INSERT INTO meeting.tbl_member (
+//                        email, name, password, birth_year, location, education, job, salary, hobby, cellphone, admin_flag, reg_date, upd_date
+//                    ) VALUES (
+//                        'nosent_{$i}@gmail.com', '최진욱{$i}', :password, '1986', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29');
+//                    ";
+//                $this->query($sql);
+//                $this->bind(":password", password_hash('password', PASSWORD_DEFAULT));
+//                $this->execute();
+//            }
 
+            return "SUCCESS";
+        }        
+        
+        /**
+         * 회원별 가중치 등록
+         * 
+         * @param $member_id
+         * @param array $weights
+         */
+        public function insertMemberWeight($member_id, Array $weights)
+        {
+            foreach($weights as $k => $v) {
+                $sql = "
+                insert into tbl_member_weight (
+                    w_id, w_item, w_point
+                ) values (
+                    $member_id, '$k', '$v'
+                )
+                ";
+
+                $this->query($sql);
+                $this->execute();
+            }
         }
 
+        // 인기도 저장
+        public function insertMemberPopular($member_id)
+        {
+            $sql = "
+            insert into tbl_member_popular (
+                p_id, p_point
+            ) values (
+                $member_id, 1
+            )
+            ";
 
+            $this->query($sql);
+            $this->execute();
+        }
+
+        public function getMemberInfo($member)
+        {
+            $sql = "select id, name, password from tbl_member where email = :email";
+            $this->query($sql);
+            $this->bind(":email", $member['email']);
+            $result = $this->single();
+
+            if (!$result) {
+                return null;
+            }
+
+            if (! $this->isValidMemberPassword($member['pwd'], $result['password'])) {
+                return null;
+            }
+
+            return $result;
+        }
+
+        public function isValidMemberPassword($pwd, $member_pwd)
+        {
+            return password_verify($pwd, $member_pwd);
+        }
+
+        public function getRecommendMatchingList()
+        {
+            // Condition
+            // 1. 동성 제외
+            // 2. 점수 높은 순
+            if ($this->getMemberSex($_SESSION['m_id']) === "M") {
+                $m_sex = "F";
+            } else {
+                $m_sex = "M";
+            }
+
+            $sql = "
+                select   w_id
+                        ,d.sender_id
+                        ,d.status
+                        ,a.email
+                        ,a.name
+                        ,a.birth_year
+                        ,fnCodeNm('location', a.location) as location
+                        ,fnCodeNm('education', a.education) as education
+                        ,fnCodeNm('job', a.job) as job
+                        ,fnCodeNm('salary', a.salary) as salary
+                        ,fnCodeNm('hobby', a.hobby) as hobby
+                        ,a.cellphone
+                        ,p_point
+                        ,sum(w_point) w_point 
+                from     tbl_member a inner join 
+                         tbl_member_weight b 
+                on       a.id = b.w_id left join
+                         tbl_member_popular c
+                on       a.id = c.p_id left join
+                         tbl_good_feel d
+                on       a.id = d.receiver_id
+                where    sex = '$m_sex'
+                group by w_id 
+                order by w_point desc
+                limit 3
+            ";
+
+            $this->query($sql);
+
+            return $this->resultset($sql);
+        }
+
+        public function getMemberSex($m_id)
+        {
+            $sql = "select sex from tbl_member where id = :id";
+            $this->query($sql);
+            $this->bind(":id", $m_id);
+            $result = $this->single();
+
+            return $result['sex'];
+        }
+
+        public function increasePopular($p_id)
+        {
+            $sql = "update tbl_member_popular set p_point = p_point + 1 where p_id=:p_id";
+            $this->query($sql);
+            $this->bind(":p_id", $p_id);
+            $this->execute();
+
+            return $this->rowCount();
+        }
+
+        public function insertGoodFeel($info)
+        {
+            $sql = " insert into tbl_good_feel ( sender_id, receiver_id, status ) values ( :sender_id, :receiver_id, :status )";
+            $this->query($sql);
+            $this->bind(":sender_id", $info['sender_id']);
+            $this->bind(":receiver_id", $info['receiver_id']);
+            $this->bind(":status", $info['status']);
+            $this->execute();
+
+            return true;
+        }
         // ----------------------------------------------------------------------------------------------------
         // -- 아래는 단축URL 관련 함수
         // ----------------------------------------------------------------------------------------------------

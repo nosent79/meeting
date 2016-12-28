@@ -27,6 +27,13 @@ function submitConvertForm(frm){
     return false;
 }
 
+    function popupOpen(url, opt){
+        var popUrl = url;	//팝업창에 출력될 페이지 URL
+        var popOption = opt;    //팝업창 옵션(optoin)
+        window.open(popUrl,"",popOption);
+    }
+
+
 $(document).ready(function() {
     $('.inputLongUrlBox').each(function() {
         $(this).data('defaultValue', '긴 주소를 입력하세요');

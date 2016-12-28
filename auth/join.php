@@ -8,6 +8,10 @@
     require_once "../Database.php";
 
     $db = new Database();
+
+    if(isMember()) {
+        redirectSiteURL(SITE_URL. SITE_PORT);
+    }
 ?>
 <!doctype html>
 <html lang="en">
@@ -19,6 +23,8 @@
     <title><?=SITE_TITLE?></title>
     <link rel="stylesheet" href="<?=SITE_URL.SITE_PORT?>/common/css/common.css">
     <link rel="stylesheet" href="<?=SITE_URL.SITE_PORT?>/common/css/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="<?=SITE_URL.SITE_PORT?>/common/js/common.js"></script>
@@ -47,6 +53,8 @@
                 frm.u_hp3.focus();
                 return;
             }
+
+            if(checkEmail(frm.u_email,frm.u_email_domain,frm.u_email_domain_select) == false){ return; }
 
             frm.action = "join_ok.php";
 
@@ -98,24 +106,6 @@
                 }
                 u_name.removeClass('focusIn');
             })
-
-
-//            var u_hobby = $("#u_hobby");
-//            u_hobby.data('defaultValue', '취미');
-//            u_hobby.attr('value', u_hobby.data('defaultValue'));
-//            u_hobby
-//            .bind('focus click keydown', function() {
-//                if (u_hobby.attr('value') == u_hobby.data('defaultValue')) {
-//                    u_hobby.attr('value','');
-//                }
-//                u_hobby.addClass('focusIn');
-//            })
-//            .focusout(function() {
-//                if (u_hobby.attr('value') == '') {
-//                    u_hobby.attr('value',u_hobby.data('defaultValue'));
-//                }
-//                u_hobby.removeClass('focusIn');
-//            })
         });
 
         //체크박스,라디오버튼 체크표시 label class 변경/ 실제 체크박스 checked 별도 처리
@@ -164,6 +154,24 @@
     </script>
 </head>
 <body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><?=SITE_TITLE?></a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="<?=SITE_URL.SITE_PORT?>">Home</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
 <div style="width:100%;">
     <form class="match_Form" name="transform" method="post">
         <div id="endingwrap">
@@ -171,18 +179,27 @@
                 <div class="ending_1">
                     <ul>
                         <li class="in1"><input type="text" id="u_name" name="u_name" maxlength="10" value=""></li>
-                        <li class="in2">
-                            <div class="select">
-                                <select id="u_ident1" name="u_ident1" class="select" title="출생년도" style="z-index: 10; opacity: 0;">
+                        <li class="in8">
+                            <input type="text" id="u_email1" name="u_email" style="width:130px;" />
+                            <span>@</span>
+                            <div class="select-etc" style="float:right;">
+                                <select name="u_email_domain_select" id="u_email_domain_select" class="select-etc" title="이메일" >
                                     <option value="">선택</option>
-                                    <?php
+                                    <option value="naver.com">naver.com</option>
+                                    <option value="hanmail.net">hanmail.net</option>
+                                    <option value="gmail.com">gmail.com</option>
+                                    <option value="empal.com">empal.com</option>
+                                    <option value="nate.com">nate.com</option>
+                                    <option value="dreamwiz.com">dreamwiz.com</option>
+                                    <option value="hotmail.com">hotmail.com</option>
+                                    <option value="korea.com">korea.com</option>
+                                    <option value="paran.com">paran.com</option>
+                                    <option value="hanafos.com">hanafos.com</option>
+                                    <option value="freechal.com">freechal.com</option>
+                                    <option value="lycos.co.kr">lycos.co.kr</option>
+                                    <option value="chol.com">chol.com</option>
 
-                                        for ($i = 1997; $i > 1970; $i--) {
-                                    ?>
-                                            <option value="<?=$i?>"><?=$i."년"?></option>
-                                    <?php
-                                        }
-                                    ?>
+                                    <option value="input">직접입력</option>
                                 </select>
                             </div>
                         </li>
@@ -190,19 +207,18 @@
                             <input type="radio" id="u_sex1" name="u_ident2" value="M" title="남" />
                             <input type="radio" id="u_sex2" name="u_ident2" value="F" title="여" />
                         </li>
-                        <li class="in4">
+                        <li class="in2">
                             <div class="select">
-                                <select id="u_edu" name="u_edu" class="select" title="학력" style="z-index: 10; opacity: 0;">
+                                <select id="u_ident1" name="u_ident1" class="select" title="출생년도" style="z-index: 10; opacity: 0;">
                                     <option value="">선택</option>
                                     <?php
-                                    $education = $db->getCodes('education');
-                                    foreach($education as $v) {
-                                    ?>
-                                    <option value="<?=$v['id']?>"><?=$v['name']?></option>
-                                    <?php
+
+                                    for ($i = 1997; $i > 1970; $i--) {
+                                        ?>
+                                        <option value="<?=$i?>"><?=$i."년"?></option>
+                                        <?php
                                     }
                                     ?>
-
                                 </select>
                             </div>
                         </li>
@@ -221,21 +237,23 @@
                                 </select>
                             </div>
                         </li>
-                        <li class="in6">
+                        <li class="in4">
                             <div class="select">
-                                <select id="u_location" name="u_location" class="select" title="거주지역" style="z-index: 10; opacity: 0;">
+                                <select id="u_edu" name="u_edu" class="select" title="학력" style="z-index: 10; opacity: 0;">
                                     <option value="">선택</option>
                                     <?php
-                                    $location = $db->getCodes('location');
-                                    foreach($location as $v) {
-                                    ?>
-                                    <option value="<?=$v['id']?>"><?=$v['name']?></option>
-                                    <?php
+                                    $education = $db->getCodes('education');
+                                    foreach($education as $v) {
+                                        ?>
+                                        <option value="<?=$v['id']?>"><?=$v['name']?></option>
+                                        <?php
                                     }
                                     ?>
+
                                 </select>
                             </div>
                         </li>
+
                         <li class="in7">
                             <div class="select-etc">
                                 <select name="u_hp1" class="select-etc" title="핸드폰" style="z-index: 10; opacity: 0;">
@@ -249,24 +267,22 @@
                                 </select>
                             </div><input type="text" name="u_hp2" maxlength="4" style="width:90px; margin-left:15px;"><input type="text" name="u_hp3" maxlength="4" class="last" style="width:90px;">
                         </li>
-                        <li class="in8">
+                        <li class="in6">
                             <div class="select">
-                                <select id="u_salary" name="u_salary" class="select" title="연봉" style="z-index: 10; opacity: 0;">
+                                <select id="u_location" name="u_location" class="select" title="거주지역" style="z-index: 10; opacity: 0;">
                                     <option value="">선택</option>
                                     <?php
-                                        $salary = $db->getCodes('salary');
-                                        $prefix_first = "이하";
-                                        $suffix_last = "이상";
-
-                                        foreach($salary as $v) {
-                                    ?>
-                                    <option value="<?=$v['id']?>"><?=$v['name']?></option>
-                                    <?php
-                                        }
+                                    $location = $db->getCodes('location');
+                                    foreach($location as $v) {
+                                        ?>
+                                        <option value="<?=$v['id']?>"><?=$v['name']?></option>
+                                        <?php
+                                    }
                                     ?>
                                 </select>
                             </div>
                         </li>
+
                         <li class="in1">
                             <div class="select">
                                 <select id="u_hobby" name="u_hobby" class="select" title="취미" style="z-index: 10; opacity: 0;">
@@ -283,6 +299,25 @@
                                 </select>
                             </div>
                         </li>
+                        <li class="in8">
+                            <div class="select">
+                                <select id="u_salary" name="u_salary" class="select" title="연봉" style="z-index: 10; opacity: 0;">
+                                    <option value="">선택</option>
+                                    <?php
+                                    $salary = $db->getCodes('salary');
+                                    $prefix_first = "이하";
+                                    $suffix_last = "이상";
+
+                                    foreach($salary as $v) {
+                                        ?>
+                                        <option value="<?=$v['id']?>"><?=$v['name']?></option>
+                                        <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </li>
+
                         <li class="in1">
                             <input type="password" id="u_pwd1" name="u_pwd1" maxlength="20" value="">
                         </li>
@@ -290,7 +325,7 @@
                             <input type="password" id="u_pwd2" name="u_pwd2" maxlength="20" value="">
                         </li>
                     </ul>
-                    <p class="btn"><a href="javascript:check_submit();"><img src="<?=SITE_URL.SITE_PORT?>/common/images/btn_ending.png" alt="완료"></a></p>
+                    <p class="btnComplete"><a href="javascript:check_submit();"><img src="<?=SITE_URL.SITE_PORT?>/common/images/btn_ending.png" alt="완료"></a></p>
                 </div>
             </div>
         </div>
