@@ -49,6 +49,28 @@
         exit;
     }
 
-    function getAges($ages) {
-        return date("Y") - $ages + 1;
+    function getAges($year) {
+        return date("Y") - $year + 1;
+    }
+
+    function getAge($age, $flag = '|') {
+        $ages = explode($flag, $age);
+        $rtn = [];
+
+        // 2016년도 기준으로 21 => 1996
+
+        foreach($ages as $age) {
+            array_push($rtn, date("Y") - $age + 1);
+        }
+
+        return $rtn;
+    }
+
+    function convertPhoneFormat($hp)
+    {
+        if(!preg_match("/^01[0-9]{8,9}$/", $hp)) {
+            throw new Exception('휴대폰 번호가 아닙니다.');
+        }
+
+        return preg_replace("/(^01.{1})([0-9]+)([0-9]{4})/", "$1-$2-$3", $hp);
     }

@@ -34,7 +34,7 @@ if(!isMember()) {
             <th>학력</th>
             <th>거주지</th>
             <th>직업</th>
-            <th>&nbsp;</th>
+            <th>비고</th>
         </tr>
         </thead>
         <tbody>
@@ -58,7 +58,7 @@ if(!isMember()) {
             <td><?=$member['education']?></td>
             <td><?=$member['location']?></td>
             <td><?=$member['job']?></td>
-            <td><button class="_good button <?=$btn_class?>" r_id="<?=$member['w_id']?>" <?=$btn_disabled?>><?=$btn_text?></button></td>
+            <td><button class="_good button <?=$btn_class?>" g_id="<?=$member['w_id']?>" <?=$btn_disabled?>><?=$btn_text?></button></td>
         </tr>
         <?php
             }
@@ -72,16 +72,16 @@ if(!isMember()) {
     $(document).ready(function() {
         // 호감 보내기
         $("._good").click(function() {
-            var r_id = $(this).attr('r_id');
+            var g_id = $(this).attr('g_id');
 
             $.ajax({
                 type: "post",
                 url: "<?=SITE_URL.SITE_PORT?>/ajax/sendGoodFeel.php",
-                data: {'r_id': r_id},
+                data: {'g_id': g_id},
                 dataType: 'json',
                 success: function(res){
                     if(res.status == 'success') {
-                        $("[r_id="+r_id+"]").addClass('red').attr("disabled", "disabled").text("썸타는중");
+                        $("[g_id="+g_id+"]").addClass('red').attr("disabled", "disabled").text("썸타는중");
                     } else {
                         alert("실패했습니다.");
                     }

@@ -10,16 +10,12 @@
     $db = new Database();
 
     $info = [
-        'sender_id' => $_SESSION['m_id'],
-        'receiver_id' => $_POST['g_id'],
-        'status' => 'P',
+        'sender_id' => $_POST['g_id'],
+        'receiver_id' => $_SESSION['m_id'],
+        'status' => 'S',
     ];
 
-    // 인기도 1 증가
-    $rtn = $db->increasePopular($info['receiver_id']);
-
-    // 호감 테이블에 저장
-    if ($db->insertGoodFeel($info)) {
+    if ($db->updateGoodFeel($info)) {
         $code   = "00";
         $status = "success";
         $msg    = "success";

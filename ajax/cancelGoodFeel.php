@@ -15,12 +15,8 @@
         'status' => 'P',
     ];
 
-    // 인기도 1 증가
-    $rtn = $db->increasePopular($info['receiver_id']);
-
-    // 호감 테이블에 저장
-    if ($db->insertGoodFeel($info)) {
-        $code   = "00";
+    if ($db->deleteGoodFeel($info)) {
+        $code   = "09";
         $status = "success";
         $msg    = "success";
     } else {

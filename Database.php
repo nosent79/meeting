@@ -415,6 +415,219 @@
 
             return true;
         }
+
+        public function updateGoodFeel($info)
+        {
+            $sql = " 
+                update tbl_good_feel set status = :status 
+                where sender_id = :sender_id 
+                and receiver_id = :receiver_id
+            ";
+
+            $this->query($sql);
+            $this->bind(":status", $info['status']);
+            $this->bind(":sender_id", $info['sender_id']);
+            $this->bind(":receiver_id", $info['receiver_id']);
+            $this->execute();
+
+            return true;
+        }
+
+        public function deleteGoodFeel($info)
+        {
+            $sql = "
+                delete from tbl_good_feel 
+                where sender_id = :sender_id 
+                and receiver_id = :receiver_id
+            ";
+
+            $this->query($sql);
+            $this->bind(":sender_id", $info['sender_id']);
+            $this->bind(":receiver_id", $info['receiver_id']);
+            $this->execute();
+
+            return $this->rowCount();
+        }
+
+        public function searchMember($params)
+        {
+            // Condition
+            // 1. 동성 제외
+            // 2. 인기도 높은 순
+            if ($this->getMemberSex($_SESSION['m_id']) === "M") {
+                $m_sex = "F";
+            } else {
+                $m_sex = "M";
+            }
+
+            $condition = "";
+            if ($params['ages'] !== "") {
+                $ages = getAge($params['ages']);
+                $condition .= " and birth_year <= $ages[0] and birth_year >= $ages[1]";
+            }
+            if ($params['education'] !== "") {
+                $condition .= " and education = {$params['education']}";
+            }
+            if ($params['location'] !== "") {
+                $condition .= " and location = {$params['location']}";
+            }
+            if ($params['job'] !== "") {
+                $condition .= " and job = {$params['job']}";
+            }
+            if ($params['salary'] !== "") {
+                $condition .= " and salary = {$params['salary']}";
+            }
+
+            $sql = "
+                select  a.id
+                        ,d.sender_id
+                        ,d.status
+                        ,a.email
+                        ,a.name
+                        ,a.birth_year
+                        ,fnCodeNm('location', a.location) as location
+                        ,fnCodeNm('education', a.education) as education
+                        ,fnCodeNm('job', a.job) as job
+                        ,fnCodeNm('salary', a.salary) as salary
+                        ,fnCodeNm('hobby', a.hobby) as hobby
+                        ,a.cellphone
+                        ,p_point
+                from     tbl_member a left join
+                         tbl_member_popular c
+                on       a.id = c.p_id left join
+                         tbl_good_feel d
+                on       a.id = d.receiver_id
+                where    a.sex = '$m_sex'
+                $condition      
+                group by id 
+                order by p_point desc
+
+            ";
+            $this->query($sql);
+
+            return $this->resultset($sql);
+        }
+
+        public function getMyPopularPoint($id)
+        {
+            $sql = "select p_point from tbl_member_popular where p_id = :id";
+
+            $this->query($sql);
+            $this->bind(":id", $id);
+            $result = $this->single();
+
+            return $result['p_point'];
+
+        }
+
+        public function getMatchingList($flag)
+        {
+            $sql = "
+                SELECT a.id, 
+                       a.name, 
+                       a.birth_year, 
+                       a.cellphone, 
+                       a.email, 
+                       fnCodeNm('location', a.location)   AS location, 
+                       fnCodeNm('education', a.education) AS education, 
+                       fnCodeNm('job', a.job)             AS job, 
+                       fnCodeNm('salary', a.salary)       AS salary, 
+                       fnCodeNm('hobby', a.hobby)         AS hobby, 
+                       p_point 
+                FROM   tbl_member a 
+                       LEFT JOIN tbl_member_popular c 
+                              ON a.id = c.p_id 
+                WHERE  a.id IN (SELECT CASE 
+                                         WHEN sender_id = :id THEN receiver_id 
+                                         ELSE sender_id 
+                                       end id 
+                                FROM   tbl_good_feel 
+                                WHERE  ( sender_id = :id 
+                                          OR receiver_id = :id ) 
+                                       AND status = '$flag') 
+                GROUP  BY a.id 
+            ";
+
+            $this->query($sql);
+            $this->bind(":id", $_SESSION['m_id']);
+
+            return $this->resultset($sql);
+        }
+
+        public function receiveGoodFeelList($flag)
+        {
+            $sql = "
+                SELECT a.id, 
+                       a.name, 
+                       a.birth_year, 
+                       a.cellphone, 
+                       a.email, 
+                       Fncodenm('location', a.location)   AS location, 
+                       Fncodenm('education', a.education) AS education, 
+                       Fncodenm('job', a.job)             AS job, 
+                       Fncodenm('salary', a.salary)       AS salary, 
+                       Fncodenm('hobby', a.hobby)         AS hobby, 
+                       p_point 
+                FROM   tbl_member a 
+                       LEFT JOIN tbl_member_popular c 
+                              ON a.id = c.p_id 
+                WHERE  a.id IN (SELECT sender_id 
+                                FROM   tbl_good_feel 
+                                WHERE  receiver_id = :id 
+                                AND status = '$flag') 
+                GROUP  BY a.id             
+            ";
+
+            $this->query($sql);
+            $this->bind(":id", $_SESSION['m_id']);
+
+            return $this->resultset($sql);
+        }
+
+        public function sendGoodFeelList($flag)
+        {
+            $sql = "
+                SELECT a.id, 
+                       a.name, 
+                       a.birth_year, 
+                       a.cellphone, 
+                       a.email, 
+                       Fncodenm('location', a.location)   AS location, 
+                       Fncodenm('education', a.education) AS education, 
+                       Fncodenm('job', a.job)             AS job, 
+                       Fncodenm('salary', a.salary)       AS salary, 
+                       Fncodenm('hobby', a.hobby)         AS hobby, 
+                       p_point 
+                FROM   tbl_member a 
+                       LEFT JOIN tbl_member_popular c 
+                              ON a.id = c.p_id 
+                WHERE  a.id IN (SELECT receiver_id 
+                                FROM   tbl_good_feel 
+                                WHERE  sender_id = :id 
+                                AND status = '$flag') 
+                GROUP  BY a.id                  
+            ";
+
+            $this->query($sql);
+            $this->bind(":id", $_SESSION['m_id']);
+
+            return $this->resultset($sql);
+        }
+
+        public function insertAssess($params)
+        {
+            $sql = " insert into tbl_assess ( assessor_id, target_id, point, comment ) values ( :assessor_id, :target_id, :point, :comment )";
+            $this->query($sql);
+            $this->bind(":assessor_id", $_SESSION['m_id']);
+            $this->bind(":target_id", $params['target_id']);
+            $this->bind(":point", $params['assess_point']);
+            $this->bind(":comment", $params['assess_comment']);
+            $this->execute();
+
+            return $this->rowCount();
+        }
+
+
         // ----------------------------------------------------------------------------------------------------
         // -- 아래는 단축URL 관련 함수
         // ----------------------------------------------------------------------------------------------------

@@ -35,54 +35,47 @@ if(!isMember()) {
             <th>학력</th>
             <th>거주지</th>
             <th>직업</th>
-            <th>&nbsp;</th>
+            <th>비고</th>
         </tr>
         </thead>
-        <tbody>
-        <?php
-        $rec_list = $db->getRecommendMatchingList();
-
-        foreach($rec_list as $member) {
-            $btn_text = "호감발송";
-            $btn_class = "green";
-            $btn_disabled = "";
-
-            if ($member['sender_id']) {
-                $btn_text = "썸타는중";
-                $btn_class = "red";
-                $btn_disabled = "disabled";
-            }
-            ?>
-            <tr>
-                <td><?=$member['name']?></td>
-                <td><?=getAges($member['birth_year'])?></td>
-                <td><?=$member['education']?></td>
-                <td><?=$member['location']?></td>
-                <td><?=$member['job']?></td>
-                <td><button class="_good button <?=$btn_class?>" r_id="<?=$member['w_id']?>" <?=$btn_disabled?>><?=$btn_text?></button></td>
-            </tr>
-            <?php
-        }
-        ?>
-        </tbody>
+        <tbody id="member_list"></tbody>
     </table>
 
 
 </div>
 <script>
+    function getAge(year)
+    {
+        return parseInt((new Date).getFullYear() - year + 1);
+    }
+
+    function checkItems(params)
+    {
+        var items = params.split("&");
+        var flag = false;
+        for ( var i in items ) {
+            var item = items[i].split("=");
+            if (item[1]) {
+                flag = true;
+            }
+        }
+
+        return flag;
+    }
+
     $(document).ready(function() {
         // 호감 보내기
         $("._good").click(function() {
-            var r_id = $(this).attr('r_id');
+            var g_id = $(this).attr('g_id');
 
             $.ajax({
                 type: "post",
                 url: "<?=SITE_URL.SITE_PORT?>/ajax/sendGoodFeel.php",
-                data: {'r_id': r_id},
+                data: {'g_id': g_id},
                 dataType: 'json',
                 success: function(res){
                     if(res.status == 'success') {
-                        $("[r_id="+r_id+"]").addClass('red').attr("disabled", "disabled").text("썸타는중");
+                        $("[g_id="+g_id+"]").addClass('red').attr("disabled", "disabled").text("썸타는중");
                     } else {
                         alert("실패했습니다.");
                     }
@@ -90,8 +83,62 @@ if(!isMember()) {
             });
         });
 
-        $("#btnSearch").click(function() {
-            alert("zzzzz");
+        // 대상자 검색 - ajax 연동하여 json으로 처리
+        $("#btnSearch").click(function(e) {
+            e.preventDefault();
+
+            var params = $("#frmSearch").serialize();
+
+            if(!checkItems(params)) {
+                alert("조건은 하나 이상이어야합니다");
+                return;
+            }
+
+            $.ajax({
+                type: "post",
+                url: "<?=SITE_URL.SITE_PORT?>/ajax/searchMember.php",
+                data: params,
+                dataType: 'json',
+                success: function(res){
+                    if(res.status === 'success') {
+                        var html = "";
+                        var btn_text = "호감발송";
+                        var btn_class = "green";
+                        var btn_disabled = "";
+
+                        for (var i in res.data) {
+                            btn_text = "호감발송";
+                            btn_class = "green";
+                            btn_disabled = "";
+
+                            if (res.data[i].sender_id) {
+                                btn_text = "썸타는중";
+                                btn_class = "red";
+                                btn_disabled = "disabled";
+                            }
+
+                            html += "<tr>";
+                            html += "    <td>" + res.data[i].name + "</td>";
+                            html += "    <td>" + getAge(res.data[i].birth_year) + "</td>";
+                            html += "    <td>" + res.data[i].education + "</td>";
+                            html += "    <td>" + res.data[i].location + "</td>";
+                            html += "    <td>" + res.data[i].job + "</td>";
+                            html += "    <td><button class='_good button "+btn_class+"' g_id='"+res.data[i].id+"' "+btn_disabled+">"+btn_text+"</button></td>";
+                            html += "</tr>";
+                        }
+
+                        $("#member_list").html(html);
+                    } else if (res.status === 'not data') {
+                        html += "<tr>";
+                        html += "<td colspan='6'>"+res.msg+"</td>";
+                        html += "<tr>";
+
+                        $("#member_list").html(html);
+                    } else {
+                        alert(res.status);
+                    }
+                }
+            });
         });
     });
 
