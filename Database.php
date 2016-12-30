@@ -352,6 +352,7 @@
             }
 
             $sql = "
+                SET sql_mode = '';
                 select   w_id
                         ,d.sender_id
                         ,d.status
@@ -376,9 +377,9 @@
                 where    sex = '$m_sex'
                 group by w_id 
                 order by w_point desc
-                limit 3
+                limit 3;
             ";
-
+            var_dump($sql) or die();
             $this->query($sql);
 
             return $this->resultset($sql);
@@ -479,6 +480,7 @@
             }
 
             $sql = "
+                SET sql_mode = '';
                 select  a.id
                         ,d.sender_id
                         ,d.status
@@ -500,7 +502,7 @@
                 where    a.sex = '$m_sex'
                 $condition      
                 group by id 
-                order by p_point desc
+                order by p_point desc;
 
             ";
             $this->query($sql);
@@ -523,6 +525,7 @@
         public function getMatchingList($flag)
         {
             $sql = "
+                SET sql_mode = '';
                 SELECT a.id, 
                        a.name, 
                        a.birth_year, 
@@ -545,6 +548,7 @@
                                 WHERE  ( sender_id = :id 
                                           OR receiver_id = :id ) 
                                        AND status = '$flag') 
+                GROUP  BY a.id                                        
             ";
             
             $this->query($sql);
@@ -556,6 +560,7 @@
         public function receiveGoodFeelList($flag)
         {
             $sql = "
+                SET sql_mode = '';
                 SELECT a.id, 
                        a.name, 
                        a.birth_year, 
@@ -574,6 +579,7 @@
                                 FROM   tbl_good_feel 
                                 WHERE  receiver_id = :id 
                                 AND status = '$flag') 
+                GROUP  BY a.id;
             ";
 
             $this->query($sql);
@@ -585,6 +591,7 @@
         public function sendGoodFeelList($flag)
         {
             $sql = "
+                SET sql_mode = '';
                 SELECT a.id, 
                        a.name, 
                        a.birth_year, 
@@ -603,6 +610,7 @@
                                 FROM   tbl_good_feel 
                                 WHERE  sender_id = :id 
                                 AND status = '$flag') 
+                GROUP  BY a.id;                                
             ";
 
             $this->query($sql);

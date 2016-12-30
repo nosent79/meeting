@@ -13,10 +13,12 @@
 
 
 -- meeting 데이터베이스 구조 내보내기
+DROP DATABASE IF EXISTS `meeting`;
 CREATE DATABASE IF NOT EXISTS `meeting` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `meeting`;
 
 -- 함수 meeting.fnCodeNm 구조 내보내기
+DROP FUNCTION IF EXISTS `fnCodeNm`;
 DELIMITER //
 CREATE DEFINER=`jerry`@`localhost` FUNCTION `fnCodeNm`(
 	`_code` VARCHAR(10),
@@ -37,6 +39,7 @@ CREATE DEFINER=`jerry`@`localhost` FUNCTION `fnCodeNm`(
 DELIMITER ;
 
 -- 프로시저 meeting.spSetMemberSex 구조 내보내기
+DROP PROCEDURE IF EXISTS `spSetMemberSex`;
 DELIMITER //
 CREATE DEFINER=`jerry`@`localhost` PROCEDURE `spSetMemberSex`()
 	BEGIN
@@ -51,6 +54,7 @@ CREATE DEFINER=`jerry`@`localhost` PROCEDURE `spSetMemberSex`()
 DELIMITER ;
 
 -- 프로시저 meeting.spSetMemberWeight 구조 내보내기
+DROP PROCEDURE IF EXISTS `spSetMemberWeight`;
 DELIMITER //
 CREATE DEFINER=`jerry`@`localhost` PROCEDURE `spSetMemberWeight`()
 	BEGIN
@@ -69,6 +73,7 @@ CREATE DEFINER=`jerry`@`localhost` PROCEDURE `spSetMemberWeight`()
 DELIMITER ;
 
 -- 테이블 meeting.tbl_assess 구조 내보내기
+DROP TABLE IF EXISTS `tbl_assess`;
 CREATE TABLE IF NOT EXISTS `tbl_assess` (
 	`assessor_id` int(10) NOT NULL,
 	`target_id` int(10) NOT NULL,
@@ -82,10 +87,13 @@ CREATE TABLE IF NOT EXISTS `tbl_assess` (
 DELETE FROM `tbl_assess`;
 /*!40000 ALTER TABLE `tbl_assess` DISABLE KEYS */;
 INSERT INTO `tbl_assess` (`assessor_id`, `target_id`, `point`, `comment`, `reg_date`) VALUES
-	(1, 2, 100, '', '2016-12-27 14:11:05');
+	(1, 2, 100, '', '2016-12-27 14:11:05'),
+	(79, 2, 3, 'ㅁㄴㅇㄻㄴㅇㄹㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄹ', '2016-12-29 19:21:32'),
+	(79, 3, 4, '최진욱3 평가~~~~~', '2016-12-29 19:29:43');
 /*!40000 ALTER TABLE `tbl_assess` ENABLE KEYS */;
 
 -- 테이블 meeting.tbl_code 구조 내보내기
+DROP TABLE IF EXISTS `tbl_code`;
 CREATE TABLE IF NOT EXISTS `tbl_code` (
 	`code` varchar(10) NOT NULL,
 	`id` varchar(4) NOT NULL,
@@ -166,6 +174,7 @@ INSERT INTO `tbl_code` (`code`, `id`, `name`) VALUES
 /*!40000 ALTER TABLE `tbl_code` ENABLE KEYS */;
 
 -- 테이블 meeting.tbl_good_feel 구조 내보내기
+DROP TABLE IF EXISTS `tbl_good_feel`;
 CREATE TABLE IF NOT EXISTS `tbl_good_feel` (
 	`sender_id` int(10) NOT NULL,
 	`receiver_id` int(10) NOT NULL,
@@ -175,12 +184,24 @@ CREATE TABLE IF NOT EXISTS `tbl_good_feel` (
 	PRIMARY KEY (`sender_id`,`receiver_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='호감도';
 
--- 테이블 데이터 meeting.tbl_good_feel:~0 rows (대략적) 내보내기
+-- 테이블 데이터 meeting.tbl_good_feel:~10 rows (대략적) 내보내기
 DELETE FROM `tbl_good_feel`;
 /*!40000 ALTER TABLE `tbl_good_feel` DISABLE KEYS */;
+INSERT INTO `tbl_good_feel` (`sender_id`, `receiver_id`, `status`, `reg_date`, `upd_date`) VALUES
+	(10, 79, 'S', '2016-12-29 15:51:45', '0000-00-00 00:00:00'),
+	(11, 79, 'F', '2016-12-29 15:51:45', '0000-00-00 00:00:00'),
+	(12, 79, 'F', '2016-12-29 15:51:45', '0000-00-00 00:00:00'),
+	(13, 79, 'S', '2016-12-29 15:51:45', '0000-00-00 00:00:00'),
+	(79, 2, 'S', '2016-12-29 15:50:30', '0000-00-00 00:00:00'),
+	(79, 3, 'S', '2016-12-29 15:50:30', '0000-00-00 00:00:00'),
+	(79, 5, 'F', '2016-12-29 15:50:30', '0000-00-00 00:00:00'),
+	(79, 6, 'S', '2016-12-29 15:50:30', '0000-00-00 00:00:00'),
+	(79, 63, 'P', '2016-12-29 18:28:30', '0000-00-00 00:00:00'),
+	(101, 1, 'P', '2016-12-29 15:17:43', '0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `tbl_good_feel` ENABLE KEYS */;
 
 -- 테이블 meeting.tbl_member 구조 내보내기
+DROP TABLE IF EXISTS `tbl_member`;
 CREATE TABLE IF NOT EXISTS `tbl_member` (
 	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 	`email` varchar(50) NOT NULL,
@@ -199,121 +220,123 @@ CREATE TABLE IF NOT EXISTS `tbl_member` (
 	`upd_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8;
 
--- 테이블 데이터 meeting.tbl_member:~100 rows (대략적) 내보내기
+-- 테이블 데이터 meeting.tbl_member:~101 rows (대략적) 내보내기
 DELETE FROM `tbl_member`;
 /*!40000 ALTER TABLE `tbl_member` DISABLE KEYS */;
 INSERT INTO `tbl_member` (`id`, `email`, `name`, `password`, `birth_year`, `sex`, `location`, `education`, `job`, `salary`, `hobby`, `cellphone`, `admin_flag`, `reg_date`, `upd_date`) VALUES
 	(1, 'nosent_1@gmail.com', '최진욱1', '$2y$10$7I/0p0htwUh6VI.IueCdLOiR3Mk61S8h6whGfhnJty7.Rlab90oCi', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(2, 'nosent_2@gmail.com', '최진욱2', '$2y$10$ZIZwEBXsORJJdHQdqYgtTOqqldbATyDQKleCshH9ovu2Phw3RSrj2', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(2, 'nosent_2@gmail.com', '최진욱2', '$2y$10$ZIZwEBXsORJJdHQdqYgtTOqqldbATyDQKleCshH9ovu2Phw3RSrj2', '1990', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(3, 'nosent_3@gmail.com', '최진욱3', '$2y$10$W1gdQSZu61AbotNfy/vhNOlnBLT8A9lvgR.pGEzaOkwOOjlrtECTO', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(4, 'nosent_4@gmail.com', '최진욱4', '$2y$10$5rjp9B4/B8rKgdGBImL3YuXU7E5ogOEZspFMXQA6Yn6XTUATDf24m', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(5, 'nosent_5@gmail.com', '최진욱5', '$2y$10$mwiCbHA3uVOAklBTxuutuu7VCdpXwwxlAUKNAkXtr4pPZEW1qg36a', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(6, 'nosent_6@gmail.com', '최진욱6', '$2y$10$kMIwr6Zyd4YmeAqq68DSLeHRib1/0baso5y75EoIOhGCpb54kb71.', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(4, 'nosent_4@gmail.com', '최진욱4', '$2y$10$5rjp9B4/B8rKgdGBImL3YuXU7E5ogOEZspFMXQA6Yn6XTUATDf24m', '1984', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(5, 'nosent_5@gmail.com', '최진욱5', '$2y$10$mwiCbHA3uVOAklBTxuutuu7VCdpXwwxlAUKNAkXtr4pPZEW1qg36a', '1980', 'F', '40', '60', '15', '18', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(6, 'nosent_6@gmail.com', '최진욱6', '$2y$10$kMIwr6Zyd4YmeAqq68DSLeHRib1/0baso5y75EoIOhGCpb54kb71.', '1986', 'M', '40', '60', '15', '18', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(7, 'nosent_7@gmail.com', '최진욱7', '$2y$10$aOwHvTQUh17swCjytaXxM.AEW55cLyCXNL5ypg8OpQFAO5y1H3cE6', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(8, 'nosent_8@gmail.com', '최진욱8', '$2y$10$yNlhFp6qKjgU0vAZ9xMwB.WL6TKDuNwkx0TdhJdSdj0HQu5H3dGTq', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(9, 'nosent_9@gmail.com', '최진욱9', '$2y$10$GCEFFKkgVETNuh9R7GDs8uZHSe9.Be2ax1CTAarwaKu9DJV3tTCQa', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(10, 'nosent_10@gmail.com', '최진욱10', '$2y$10$XTlCNq6sKy0mlaGS4.7H9eJexH0pqRWZN3Wu3M8rd4hEZ3aD.LyoO', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(11, 'nosent_11@gmail.com', '최진욱11', '$2y$10$JkofpkLYkwg8xemlkvLCNuYPHJLkFgxr2diQ2HLbIeXsQuxi.6k4m', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(9, 'nosent_9@gmail.com', '최진욱9', '$2y$10$GCEFFKkgVETNuh9R7GDs8uZHSe9.Be2ax1CTAarwaKu9DJV3tTCQa', '1980', 'M', '31', '20', '11', '20', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(10, 'nosent_10@gmail.com', '최진욱10', '$2y$10$XTlCNq6sKy0mlaGS4.7H9eJexH0pqRWZN3Wu3M8rd4hEZ3aD.LyoO', '1989', 'M', '20', '20', '18', '22', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(11, 'nosent_11@gmail.com', '최진욱11', '$2y$10$JkofpkLYkwg8xemlkvLCNuYPHJLkFgxr2diQ2HLbIeXsQuxi.6k4m', '1992', 'F', '62', '30', '14', '19', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(12, 'nosent_12@gmail.com', '최진욱12', '$2y$10$xzyTMcUMjOoDTqKLwUyjj.BH4xcTBo69/JBsoMa2C47LebvPkHyUy', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(13, 'nosent_13@gmail.com', '최진욱13', '$2y$10$.gN9k8Z.Hr5VnPetzcVyIOcTORZdds3aFhSQzFaQ2L8agShW55mDy', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(14, 'nosent_14@gmail.com', '최진욱14', '$2y$10$MFwJ5h8XjyZMscOY0qIvNutjRWocXJgd4XRY9tBh39EA4nYOR0/bq', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(15, 'nosent_15@gmail.com', '최진욱15', '$2y$10$cwPpEyI8nQ8es/saIkt4ROm8NuRKnaIUWKTMKa440uGOInO8CAOoO', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(16, 'nosent_16@gmail.com', '최진욱16', '$2y$10$KNoEFRlmJdDDovUCP5OB2u9LgJI1QtrAjIkewQYTdjYNO7vK7B9JK', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(17, 'nosent_17@gmail.com', '최진욱17', '$2y$10$DYiBvbdmDdNqgDwLiFhqDOTG5NSDXsR69kVwY4Ldq/298/0pL/tYi', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(18, 'nosent_18@gmail.com', '최진욱18', '$2y$10$XYb5AVPyxwgeXHIWXv0wnuHFr3RW8D303VNkya3Ok822DR2n21jbi', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(19, 'nosent_19@gmail.com', '최진욱19', '$2y$10$PF1w59LXGb.tXKcMnwHokeJN.lv6vtMz7DaS6E7L6wCoIrj5WksBW', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(13, 'nosent_13@gmail.com', '최진욱13', '$2y$10$.gN9k8Z.Hr5VnPetzcVyIOcTORZdds3aFhSQzFaQ2L8agShW55mDy', '1989', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(14, 'nosent_14@gmail.com', '최진욱14', '$2y$10$MFwJ5h8XjyZMscOY0qIvNutjRWocXJgd4XRY9tBh39EA4nYOR0/bq', '1992', 'M', '62', '30', '14', '19', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(15, 'nosent_15@gmail.com', '최진욱15', '$2y$10$cwPpEyI8nQ8es/saIkt4ROm8NuRKnaIUWKTMKa440uGOInO8CAOoO', '1994', 'M', '20', '20', '18', '22', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(16, 'nosent_16@gmail.com', '최진욱16', '$2y$10$KNoEFRlmJdDDovUCP5OB2u9LgJI1QtrAjIkewQYTdjYNO7vK7B9JK', '1993', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(17, 'nosent_17@gmail.com', '최진욱17', '$2y$10$DYiBvbdmDdNqgDwLiFhqDOTG5NSDXsR69kVwY4Ldq/298/0pL/tYi', '1989', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(18, 'nosent_18@gmail.com', '최진욱18', '$2y$10$XYb5AVPyxwgeXHIWXv0wnuHFr3RW8D303VNkya3Ok822DR2n21jbi', '1986', 'M', '62', '30', '14', '19', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(19, 'nosent_19@gmail.com', '최진욱19', '$2y$10$PF1w59LXGb.tXKcMnwHokeJN.lv6vtMz7DaS6E7L6wCoIrj5WksBW', '1980', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(20, 'nosent_20@gmail.com', '최진욱20', '$2y$10$ceM6sw91rdE5mTisoebSiuVH3a06aldm7POSOcZw0n4sapJNckDAq', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(21, 'nosent_21@gmail.com', '최진욱21', '$2y$10$GFR3IVwpUfytm4pxQzo4yelmi2ZP1R98.bym8uIOEF8kXeVAjFWB.', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(22, 'nosent_22@gmail.com', '최진욱22', '$2y$10$iPYU/Dhrt81j0HLdC/6.UeuICaD1D9ZPtE10ABbMN1qDqIxxzqc4.', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(23, 'nosent_23@gmail.com', '최진욱23', '$2y$10$h6bEkW0shcu1OU9scAEpnOCGlzAxH9Ix0q5Gkr1AtOCVK2iDJOp3i', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(24, 'nosent_24@gmail.com', '최진욱24', '$2y$10$DeCu./tm1U1yl5cV.ZEr/Oop3GJZk3f0NzxXBbXXaPBQzR64ZQ9dm', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(25, 'nosent_25@gmail.com', '최진욱25', '$2y$10$AkorChlc7x0gprgSUAFYz.5CRVDNxgRIgq2j2xYw282zYg28UU62O', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(21, 'nosent_21@gmail.com', '최진욱21', '$2y$10$GFR3IVwpUfytm4pxQzo4yelmi2ZP1R98.bym8uIOEF8kXeVAjFWB.', '1986', 'M', '40', '60', '15', '18', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(22, 'nosent_22@gmail.com', '최진욱22', '$2y$10$iPYU/Dhrt81j0HLdC/6.UeuICaD1D9ZPtE10ABbMN1qDqIxxzqc4.', '1986', 'F', '31', '20', '11', '20', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(23, 'nosent_23@gmail.com', '최진욱23', '$2y$10$h6bEkW0shcu1OU9scAEpnOCGlzAxH9Ix0q5Gkr1AtOCVK2iDJOp3i', '1986', 'F', '36', '50', '16', '23', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(24, 'nosent_24@gmail.com', '최진욱24', '$2y$10$DeCu./tm1U1yl5cV.ZEr/Oop3GJZk3f0NzxXBbXXaPBQzR64ZQ9dm', '1986', 'F', '10', '10', '13', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(25, 'nosent_25@gmail.com', '최진욱25', '$2y$10$AkorChlc7x0gprgSUAFYz.5CRVDNxgRIgq2j2xYw282zYg28UU62O', '1994', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(26, 'nosent_26@gmail.com', '최진욱26', '$2y$10$fo7OXCMgQNzm2O2q4fuaAOGU3FpIkbmn1yjDGk95qNUjZj9ZNWFTW', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(27, 'nosent_27@gmail.com', '최진욱27', '$2y$10$hJiA9QDt5kn8u9E/weVzCOnOEtqZtDux0/eVl47s0lBYxRi/Gjn1a', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(27, 'nosent_27@gmail.com', '최진욱27', '$2y$10$hJiA9QDt5kn8u9E/weVzCOnOEtqZtDux0/eVl47s0lBYxRi/Gjn1a', '1994', 'F', '20', '20', '18', '22', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(28, 'nosent_28@gmail.com', '최진욱28', '$2y$10$wK6H2uhh1jbZBx5OcwGR0u6WJlIQm0HihRm0FFFV.SazutmkGU1ry', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(29, 'nosent_29@gmail.com', '최진욱29', '$2y$10$KAICcOfBrY4IasKx9kEtOebztzsNjQTwW8.iRdp8PtUAXbRMvI7uq', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(30, 'nosent_30@gmail.com', '최진욱30', '$2y$10$J/oa96MgMqkoyEj4j0JaQ.wJRqX.hHD2DTdgXAisO52SyNFcWe.1e', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(30, 'nosent_30@gmail.com', '최진욱30', '$2y$10$J/oa96MgMqkoyEj4j0JaQ.wJRqX.hHD2DTdgXAisO52SyNFcWe.1e', '1980', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(31, 'nosent_31@gmail.com', '최진욱31', '$2y$10$YPBmfOBc1nGp0qf85ud.l.O6BOFSpZl1LP3lUfeqz94kDuBgTHkFO', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(32, 'nosent_32@gmail.com', '최진욱32', '$2y$10$PdD5UvuDF36SK/te5NYMT.Qqv4qjNN9YWVtdA3ahKKn4awnWMMby6', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(33, 'nosent_33@gmail.com', '최진욱33', '$2y$10$zqW3AgCjKoY4do8wmrT./eoS7twLg6pCoblQp7KcXYkA8T/BFIu5u', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(34, 'nosent_34@gmail.com', '최진욱34', '$2y$10$8ZPoMtYieHYrW4qRSNvmsuCterTPQ2SRGfmzUOo4.dP8rnXedXtGW', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(35, 'nosent_35@gmail.com', '최진욱35', '$2y$10$.FCMrKbMKHO76nc89ZPn8.wGwwyCMTEm8CkRa4m82uIr1LC2RI9wK', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(36, 'nosent_36@gmail.com', '최진욱36', '$2y$10$ushwUbGPHv39IV8AxDjsdejZa3aeRLIKlcdPI48zPPmyCV5MWu05O', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(37, 'nosent_37@gmail.com', '최진욱37', '$2y$10$nshvaLMMQQPpbJN05JQb.uFCwHUzkrWY8vSURPVeEqth209Ow10M6', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(38, 'nosent_38@gmail.com', '최진욱38', '$2y$10$oN3oCEvo0logG4pcrYjfte5iGwUj/AKc9ogPLb4nZy4PEf/P/Oq16', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(39, 'nosent_39@gmail.com', '최진욱39', '$2y$10$aXRq5pEAhw5P9J8xtlmvVOZWtJjbp89zUrWDjjjZabIZ4l.ZitgEO', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(40, 'nosent_40@gmail.com', '최진욱40', '$2y$10$lsE7ZjkXoTKuebWfR0CInOGO7v0W6k5QRZg3EG.0YFTfyaaYduoZu', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(41, 'nosent_41@gmail.com', '최진욱41', '$2y$10$5IbxXxjh0SMD1LpTvEs/jOHFmwzxVOaokwU0MnoYuCA3OI03LBKqq', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(32, 'nosent_32@gmail.com', '최진욱32', '$2y$10$PdD5UvuDF36SK/te5NYMT.Qqv4qjNN9YWVtdA3ahKKn4awnWMMby6', '1991', 'F', '31', '20', '11', '20', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(33, 'nosent_33@gmail.com', '최진욱33', '$2y$10$zqW3AgCjKoY4do8wmrT./eoS7twLg6pCoblQp7KcXYkA8T/BFIu5u', '1994', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(34, 'nosent_34@gmail.com', '최진욱34', '$2y$10$8ZPoMtYieHYrW4qRSNvmsuCterTPQ2SRGfmzUOo4.dP8rnXedXtGW', '1995', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(35, 'nosent_35@gmail.com', '최진욱35', '$2y$10$.FCMrKbMKHO76nc89ZPn8.wGwwyCMTEm8CkRa4m82uIr1LC2RI9wK', '1991', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(36, 'nosent_36@gmail.com', '최진욱36', '$2y$10$ushwUbGPHv39IV8AxDjsdejZa3aeRLIKlcdPI48zPPmyCV5MWu05O', '1991', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(37, 'nosent_37@gmail.com', '최진욱37', '$2y$10$nshvaLMMQQPpbJN05JQb.uFCwHUzkrWY8vSURPVeEqth209Ow10M6', '1989', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(38, 'nosent_38@gmail.com', '최진욱38', '$2y$10$oN3oCEvo0logG4pcrYjfte5iGwUj/AKc9ogPLb4nZy4PEf/P/Oq16', '1984', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(39, 'nosent_39@gmail.com', '최진욱39', '$2y$10$aXRq5pEAhw5P9J8xtlmvVOZWtJjbp89zUrWDjjjZabIZ4l.ZitgEO', '1992', 'M', '31', '20', '11', '20', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(40, 'nosent_40@gmail.com', '최진욱40', '$2y$10$lsE7ZjkXoTKuebWfR0CInOGO7v0W6k5QRZg3EG.0YFTfyaaYduoZu', '1992', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(41, 'nosent_41@gmail.com', '최진욱41', '$2y$10$5IbxXxjh0SMD1LpTvEs/jOHFmwzxVOaokwU0MnoYuCA3OI03LBKqq', '1991', 'M', '36', '50', '16', '23', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(42, 'nosent_42@gmail.com', '최진욱42', '$2y$10$07l1yYFKwgIMSuDXY05byehW7N6OqZTESmRSyPcDCZIyBKaVV6QV2', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(43, 'nosent_43@gmail.com', '최진욱43', '$2y$10$JcCaoy/x8zUNCZ3YvWVvDOcxd3ujWg4McFKyP3aOQhWvx98cQ4E4u', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(44, 'nosent_44@gmail.com', '최진욱44', '$2y$10$4bi2exrKzo2BNgl6InHwSOYwwNKtm3t1E3FFqsbrT.PRy5z/siTOS', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(43, 'nosent_43@gmail.com', '최진욱43', '$2y$10$JcCaoy/x8zUNCZ3YvWVvDOcxd3ujWg4McFKyP3aOQhWvx98cQ4E4u', '1986', 'M', '20', '20', '18', '22', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(44, 'nosent_44@gmail.com', '최진욱44', '$2y$10$4bi2exrKzo2BNgl6InHwSOYwwNKtm3t1E3FFqsbrT.PRy5z/siTOS', '1992', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(45, 'nosent_45@gmail.com', '최진욱45', '$2y$10$fqgzCDmamicg2HdxDEHLROc2fgzD0PQRVjkX6Ygu1RjOB4ac9q1zK', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(46, 'nosent_46@gmail.com', '최진욱46', '$2y$10$fwsIldzIm36jaMODUmVx9.srzCXw7KJnUIQlB4lL/WCe7L8TOVlGu', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(46, 'nosent_46@gmail.com', '최진욱46', '$2y$10$fwsIldzIm36jaMODUmVx9.srzCXw7KJnUIQlB4lL/WCe7L8TOVlGu', '1990', 'M', '33', '30', '12', '21', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(47, 'nosent_47@gmail.com', '최진욱47', '$2y$10$ybLf0F0lZ9FHoM9Eh.fcuesH4oBnBAJFdbDjpVbv48rWXE.kKFq/.', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(48, 'nosent_48@gmail.com', '최진욱48', '$2y$10$zI66tlpJXCHw.0f.8vggg.0e9mTLFlGYS6.0ojh36/6bBUfBuHk0W', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(48, 'nosent_48@gmail.com', '최진욱48', '$2y$10$zI66tlpJXCHw.0f.8vggg.0e9mTLFlGYS6.0ojh36/6bBUfBuHk0W', '1989', 'F', '62', '30', '14', '19', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(49, 'nosent_49@gmail.com', '최진욱49', '$2y$10$ZmvYL7FUrSNhv8S9X4Poh.tc3iqtQtCJ9RUxzBevPO36iw.X5Urw.', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(50, 'nosent_50@gmail.com', '최진욱50', '$2y$10$9Kn3QelKlkW021FagLRdvuAG5ad46DTyzf6azZWw0YdefSgE1Yfcu', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(51, 'nosent_51@gmail.com', '최진욱51', '$2y$10$JVt/ZJV92yjFWTmw1CeTke1.p4jj4sGafrSjpG2s.yJRyj0wI22uG', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(52, 'nosent_52@gmail.com', '최진욱52', '$2y$10$Zxh/LmvZhj/3dRnT3BD6N.NGbr.CRaCTgZMGqvLfFZwX9qmC1jHJ2', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(53, 'nosent_53@gmail.com', '최진욱53', '$2y$10$X3mTRjpJp15F2QVLQDXR6.alEGz3mKXBrgk.43G22f/DsJOLyxuO2', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(54, 'nosent_54@gmail.com', '최진욱54', '$2y$10$x7D4CKCUulpCKH8PDUMZPu0wUxlmNMc7TPLwxaNKH2F7jJf.74qyW', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(50, 'nosent_50@gmail.com', '최진욱50', '$2y$10$9Kn3QelKlkW021FagLRdvuAG5ad46DTyzf6azZWw0YdefSgE1Yfcu', '1989', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(51, 'nosent_51@gmail.com', '최진욱51', '$2y$10$JVt/ZJV92yjFWTmw1CeTke1.p4jj4sGafrSjpG2s.yJRyj0wI22uG', '1986', 'F', '40', '60', '15', '18', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(52, 'nosent_52@gmail.com', '최진욱52', '$2y$10$Zxh/LmvZhj/3dRnT3BD6N.NGbr.CRaCTgZMGqvLfFZwX9qmC1jHJ2', '1995', 'M', '10', '10', '13', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(53, 'nosent_53@gmail.com', '최진욱53', '$2y$10$X3mTRjpJp15F2QVLQDXR6.alEGz3mKXBrgk.43G22f/DsJOLyxuO2', '1996', 'F', '40', '60', '15', '18', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(54, 'nosent_54@gmail.com', '최진욱54', '$2y$10$x7D4CKCUulpCKH8PDUMZPu0wUxlmNMc7TPLwxaNKH2F7jJf.74qyW', '1980', 'M', '33', '30', '12', '21', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(55, 'nosent_55@gmail.com', '최진욱55', '$2y$10$DPDUntW2dPkD1wEjvMmyuOnGimJBHxJMD7Q0h07WOdv0YfCtT32im', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(56, 'nosent_56@gmail.com', '최진욱56', '$2y$10$ok4L/FUaQg0nqw/RVSPNeetScgWv0ghkYdJvBwqAlJD/N0JGoHew6', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(57, 'nosent_57@gmail.com', '최진욱57', '$2y$10$u4lTvbvmTQS0B8F6u2aJ3OljU8jrGCQMFiwPJ0RO42o5Y/vqK7lc2', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(56, 'nosent_56@gmail.com', '최진욱56', '$2y$10$ok4L/FUaQg0nqw/RVSPNeetScgWv0ghkYdJvBwqAlJD/N0JGoHew6', '1998', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(57, 'nosent_57@gmail.com', '최진욱57', '$2y$10$u4lTvbvmTQS0B8F6u2aJ3OljU8jrGCQMFiwPJ0RO42o5Y/vqK7lc2', '1996', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(58, 'nosent_58@gmail.com', '최진욱58', '$2y$10$EnLaK38beOALiwZse4sgj.JrQWsMCNunavLi8z4wtm0iUGOxTuK7y', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(59, 'nosent_59@gmail.com', '최진욱59', '$2y$10$3BS1Li6.ldfE2kBcxFSDxePkVFQoQ1LWMVPVfRwsBfODX.st1gW4i', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(60, 'nosent_60@gmail.com', '최진욱60', '$2y$10$0eJRvVrX2nT//6lSrr3Mr.xEPb2KjZmlmQxPUSTrK8sP9446vsf/O', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(61, 'nosent_61@gmail.com', '최진욱61', '$2y$10$hSLPUXM22FT73FxynmYrgOPis7xaXCCVUlcQbA8TtVtWZxdOo8W.G', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(62, 'nosent_62@gmail.com', '최진욱62', '$2y$10$8HKTLtKzWz1uM8Ud11MuHOhXNOmPsvrYMF7OjMF5ojKL585Lh5kVS', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(59, 'nosent_59@gmail.com', '최진욱59', '$2y$10$3BS1Li6.ldfE2kBcxFSDxePkVFQoQ1LWMVPVfRwsBfODX.st1gW4i', '1992', 'M', '31', '20', '11', '20', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(60, 'nosent_60@gmail.com', '최진욱60', '$2y$10$0eJRvVrX2nT//6lSrr3Mr.xEPb2KjZmlmQxPUSTrK8sP9446vsf/O', '1986', 'M', '20', '20', '18', '22', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(61, 'nosent_61@gmail.com', '최진욱61', '$2y$10$hSLPUXM22FT73FxynmYrgOPis7xaXCCVUlcQbA8TtVtWZxdOo8W.G', '1990', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(62, 'nosent_62@gmail.com', '최진욱62', '$2y$10$8HKTLtKzWz1uM8Ud11MuHOhXNOmPsvrYMF7OjMF5ojKL585Lh5kVS', '1993', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(63, 'nosent_63@gmail.com', '최진욱63', '$2y$10$aDUyEzsvwItkccs29715teusv.hsu0fi4ydLVGjlTr3L3hcgQ2vP.', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(64, 'nosent_64@gmail.com', '최진욱64', '$2y$10$b3f9S5ofVdb6zZakxwVDC.AnBdNLytQT7fzFXZ3sT.znNcsLXykjW', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(65, 'nosent_65@gmail.com', '최진욱65', '$2y$10$26in/HIKBgUdLRj7yCVJeeKjxYMfKpaSPOhPD/olvz0PgnL7GTbrG', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(66, 'nosent_66@gmail.com', '최진욱66', '$2y$10$2QkaUCNwdZKDs0veghTxj.wxGCo9GDgK1Sl3VXQUS90VvbLgrNIq.', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(64, 'nosent_64@gmail.com', '최진욱64', '$2y$10$b3f9S5ofVdb6zZakxwVDC.AnBdNLytQT7fzFXZ3sT.znNcsLXykjW', '1991', 'M', '36', '50', '16', '23', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(65, 'nosent_65@gmail.com', '최진욱65', '$2y$10$26in/HIKBgUdLRj7yCVJeeKjxYMfKpaSPOhPD/olvz0PgnL7GTbrG', '1998', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(66, 'nosent_66@gmail.com', '최진욱66', '$2y$10$2QkaUCNwdZKDs0veghTxj.wxGCo9GDgK1Sl3VXQUS90VvbLgrNIq.', '1998', 'M', '40', '60', '15', '18', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(67, 'nosent_67@gmail.com', '최진욱67', '$2y$10$Uubvw7gIa01r7RbcCMnCvuq18XQZ773FWAL51Yfal74qJRV6VtVUy', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(68, 'nosent_68@gmail.com', '최진욱68', '$2y$10$1qdFCPJSXP/YhC6dLKZXP.7dBcGD0P1EuIkJGc4ieCzwcZfG4pSaS', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(68, 'nosent_68@gmail.com', '최진욱68', '$2y$10$1qdFCPJSXP/YhC6dLKZXP.7dBcGD0P1EuIkJGc4ieCzwcZfG4pSaS', '1993', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(69, 'nosent_69@gmail.com', '최진욱69', '$2y$10$X2it3kuAw7pglkXvTBMHQ.9A0kUbEt5pxEUCajeERsk0p.RBSCtL6', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(70, 'nosent_70@gmail.com', '최진욱70', '$2y$10$0pSUJI26PEtP1Rvb8pynEe.0g63oA7hPjET96PvxHv5IQ9ATNnWou', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(71, 'nosent_71@gmail.com', '최진욱71', '$2y$10$SSwRQcC7CanuggVAfaZiA.cuSH0W.AipXGvJ3cyByLHY/KNW9ojgK', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(72, 'nosent_72@gmail.com', '최진욱72', '$2y$10$LxjLcGy64oQdNu6E64XkE.UnJEr42.4H74sqy.d1gPdSiOzDDNYEi', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(73, 'nosent_73@gmail.com', '최진욱73', '$2y$10$mEmd4iV8QpV3zGVuXw0Lyu641yHhP2l9wmurmnVeobUgC40Gro/Rq', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(74, 'nosent_74@gmail.com', '최진욱74', '$2y$10$i4BVCh91gX9pcC4t0.rgbuNsQF1cFbeuyN376LFQ.22xOTt0rk6h2', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(75, 'nosent_75@gmail.com', '최진욱75', '$2y$10$he1KeGQR4og3a/n/WepxCOjyyWxYuwEp9MQmzJsRlPZXFJErBJtpi', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(76, 'nosent_76@gmail.com', '최진욱76', '$2y$10$NLkOQZ69U5mZPW39/XfiUO6uTzJUXxFjfdiHQmLCIgIab.Fytj5lu', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(70, 'nosent_70@gmail.com', '최진욱70', '$2y$10$0pSUJI26PEtP1Rvb8pynEe.0g63oA7hPjET96PvxHv5IQ9ATNnWou', '1995', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(71, 'nosent_71@gmail.com', '최진욱71', '$2y$10$SSwRQcC7CanuggVAfaZiA.cuSH0W.AipXGvJ3cyByLHY/KNW9ojgK', '1991', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(72, 'nosent_72@gmail.com', '최진욱72', '$2y$10$LxjLcGy64oQdNu6E64XkE.UnJEr42.4H74sqy.d1gPdSiOzDDNYEi', '1981', 'M', '20', '20', '18', '22', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(73, 'nosent_73@gmail.com', '최진욱73', '$2y$10$mEmd4iV8QpV3zGVuXw0Lyu641yHhP2l9wmurmnVeobUgC40Gro/Rq', '1990', 'M', '33', '30', '12', '21', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(74, 'nosent_74@gmail.com', '최진욱74', '$2y$10$i4BVCh91gX9pcC4t0.rgbuNsQF1cFbeuyN376LFQ.22xOTt0rk6h2', '1986', 'M', '62', '30', '14', '19', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(75, 'nosent_75@gmail.com', '최진욱75', '$2y$10$he1KeGQR4og3a/n/WepxCOjyyWxYuwEp9MQmzJsRlPZXFJErBJtpi', '1984', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(76, 'nosent_76@gmail.com', '최진욱76', '$2y$10$NLkOQZ69U5mZPW39/XfiUO6uTzJUXxFjfdiHQmLCIgIab.Fytj5lu', '1986', 'M', '36', '50', '16', '23', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(77, 'nosent_77@gmail.com', '최진욱77', '$2y$10$d5sVo9AZY.UtuS7UTv4gFew2vuyfjjPg62wsUiGtqRJ0OaNStI1A.', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(78, 'nosent_78@gmail.com', '최진욱78', '$2y$10$Ym0.9CsABZODPbM4rw8w5.6RGgoueIV6yaytquQH7DfD3hwSDdWBW', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(79, 'nosent_79@gmail.com', '최진욱79', '$2y$10$.YLTPTyMbg7DsZ9.sfPgpecEIgu9YSfxPRTFGpnLgWoSEFiVtB6Ei', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(78, 'nosent_78@gmail.com', '최진욱78', '$2y$10$Ym0.9CsABZODPbM4rw8w5.6RGgoueIV6yaytquQH7DfD3hwSDdWBW', '1989', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(79, 'nosent_79@gmail.com', '최진욱79', '$2y$10$.YLTPTyMbg7DsZ9.sfPgpecEIgu9YSfxPRTFGpnLgWoSEFiVtB6Ei', '1986', 'M', '62', '30', '14', '19', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(80, 'nosent_80@gmail.com', '최진욱80', '$2y$10$q4o3aLOhybEc8yG7c00zE.ZOi2hku9AFTqHyeAxbtmBAy/GXutbG.', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(81, 'nosent_81@gmail.com', '최진욱81', '$2y$10$vL8dcWA34O549hube5z57OPFaxy7g11n8.40vfutgp/8aFBJ6VrcO', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(82, 'nosent_82@gmail.com', '최진욱82', '$2y$10$AMq.vxzxwUFdh/24uGZdROwspra8cQdYryig6FE10h8NonddOnxwK', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(83, 'nosent_83@gmail.com', '최진욱83', '$2y$10$YuX/b2Nh21QkhGywpyXNaOgCxivGeOFd6EcCl9CcHhpQlo8vr7jFy', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(84, 'nosent_84@gmail.com', '최진욱84', '$2y$10$JWCItwyGMlV0fLdrw0hji.IAhIzP54fQCfsjm1rYenvC7keptwNLC', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(85, 'nosent_85@gmail.com', '최진욱85', '$2y$10$4cECKikLtCsJra462duziu.DdzElJNAmmfbH3imE7UCDzWsKEMZoe', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(86, 'nosent_86@gmail.com', '최진욱86', '$2y$10$SFhy7vtoDYDMogH0L3bnq.wg4Dx4Oxd7EiakNyInEHyzAo26hFEcK', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(87, 'nosent_87@gmail.com', '최진욱87', '$2y$10$hipUER9u./2MsoAlXNiK/OKplhuLU9QIcjr.1zPwffHXCxgoGlS6.', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(88, 'nosent_88@gmail.com', '최진욱88', '$2y$10$Zn5VF19RorteRX7.67n/SuAyOMzGQtOnUnG9aj5U4cLSdRlTuZDr.', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(89, 'nosent_89@gmail.com', '최진욱89', '$2y$10$S9Xy0BrM84yf42krc4FKM.C3AC7jaeLx0HHk1z3sKKpeeXj5AdPYq', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(90, 'nosent_90@gmail.com', '최진욱90', '$2y$10$dW/.XCo80timqCw8p08h4ecDjQSEMAHoeEaWVI3yfjFd4Zf5s2D3G', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(83, 'nosent_83@gmail.com', '최진욱83', '$2y$10$YuX/b2Nh21QkhGywpyXNaOgCxivGeOFd6EcCl9CcHhpQlo8vr7jFy', '1984', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(84, 'nosent_84@gmail.com', '최진욱84', '$2y$10$JWCItwyGMlV0fLdrw0hji.IAhIzP54fQCfsjm1rYenvC7keptwNLC', '1986', 'M', '36', '50', '16', '23', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(85, 'nosent_85@gmail.com', '최진욱85', '$2y$10$4cECKikLtCsJra462duziu.DdzElJNAmmfbH3imE7UCDzWsKEMZoe', '1998', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(86, 'nosent_86@gmail.com', '최진욱86', '$2y$10$SFhy7vtoDYDMogH0L3bnq.wg4Dx4Oxd7EiakNyInEHyzAo26hFEcK', '1981', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(87, 'nosent_87@gmail.com', '최진욱87', '$2y$10$hipUER9u./2MsoAlXNiK/OKplhuLU9QIcjr.1zPwffHXCxgoGlS6.', '1986', 'F', '36', '50', '16', '23', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(88, 'nosent_88@gmail.com', '최진욱88', '$2y$10$Zn5VF19RorteRX7.67n/SuAyOMzGQtOnUnG9aj5U4cLSdRlTuZDr.', '1995', 'M', '36', '50', '16', '23', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(89, 'nosent_89@gmail.com', '최진욱89', '$2y$10$S9Xy0BrM84yf42krc4FKM.C3AC7jaeLx0HHk1z3sKKpeeXj5AdPYq', '1986', 'M', '31', '20', '11', '20', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(90, 'nosent_90@gmail.com', '최진욱90', '$2y$10$dW/.XCo80timqCw8p08h4ecDjQSEMAHoeEaWVI3yfjFd4Zf5s2D3G', '1994', 'M', '10', '10', '13', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(91, 'nosent_91@gmail.com', '최진욱91', '$2y$10$Tkt7ZrFMaZ1OGgZiGSnKlO2J/ywC6m20PJ8AgP0dL2O5xNS.edNjW', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(92, 'nosent_92@gmail.com', '최진욱92', '$2y$10$LuZD2NlgA8Mugd4kA7sqm.XrF0v42VG5Fg1.Z2GnY6Y5.JT3Ufp7S', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(93, 'nosent_93@gmail.com', '최진욱93', '$2y$10$T4XjLOwhTyawtYdQO2DCs.z60BXpJuG.HwFqEJ0TdKMddgszR1caW', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(94, 'nosent_94@gmail.com', '최진욱94', '$2y$10$bnV.4lQ9OM/esH2X3a7f1.6ZBxBnTJEXSSTOf/wgT5F2gV4Y63.FC', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(95, 'nosent_95@gmail.com', '최진욱95', '$2y$10$oH1QERX6cPm/7qiifw1jZuPsd2.vxSlxx2dglwkyhbhaL6pwM3ugm', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(92, 'nosent_92@gmail.com', '최진욱92', '$2y$10$LuZD2NlgA8Mugd4kA7sqm.XrF0v42VG5Fg1.Z2GnY6Y5.JT3Ufp7S', '1995', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(93, 'nosent_93@gmail.com', '최진욱93', '$2y$10$T4XjLOwhTyawtYdQO2DCs.z60BXpJuG.HwFqEJ0TdKMddgszR1caW', '1986', 'M', '10', '10', '13', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(94, 'nosent_94@gmail.com', '최진욱94', '$2y$10$bnV.4lQ9OM/esH2X3a7f1.6ZBxBnTJEXSSTOf/wgT5F2gV4Y63.FC', '1994', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(95, 'nosent_95@gmail.com', '최진욱95', '$2y$10$oH1QERX6cPm/7qiifw1jZuPsd2.vxSlxx2dglwkyhbhaL6pwM3ugm', '1986', 'M', '10', '10', '13', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(96, 'nosent_96@gmail.com', '최진욱96', '$2y$10$A0WWYtD.SccSmcdQEn4ThelPR.HtEe2XOhS2W95cJlVNNS.tmtXUC', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
 	(97, 'nosent_97@gmail.com', '최진욱97', '$2y$10$u0/zLI5A.mFM8xQVQrogZud7Iu7LQw2Ml5cS5rKw.akYtRnG2Gq5C', '1986', 'F', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(98, 'nosent_98@gmail.com', '최진욱98', '$2y$10$yR/OpkxTkyNLt8.LjLIGEOjJtUVa0XIZaYnvgUv9e5uOULS9lHEmu', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(99, 'nosent_99@gmail.com', '최진욱99', '$2y$10$lPTwFBSjx.v5dzNSPZ8gbOYgCPwsUxK6hSKjq0GFJPxlRDzzDoEnm', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
-	(100, 'nosent_100@gmail.com', '최진욱100', '$2y$10$8OzzQlyTwg0T/8MPFFa7NubDdcZFYHCt7mILAJ3mPlv9ggmN8UCUa', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29');
+	(98, 'nosent_98@gmail.com', '최진욱98', '$2y$10$yR/OpkxTkyNLt8.LjLIGEOjJtUVa0XIZaYnvgUv9e5uOULS9lHEmu', '1998', 'M', '40', '60', '15', '18', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(99, 'nosent_99@gmail.com', '최진욱99', '$2y$10$lPTwFBSjx.v5dzNSPZ8gbOYgCPwsUxK6hSKjq0GFJPxlRDzzDoEnm', '1995', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(100, 'nosent_100@gmail.com', '최진욱100', '$2y$10$8OzzQlyTwg0T/8MPFFa7NubDdcZFYHCt7mILAJ3mPlv9ggmN8UCUa', '1986', 'M', '10', '50', '16', '24', '21', '01041921325', 'N', '2016-12-28 11:45:29', '2016-12-28 11:45:29'),
+	(101, 'gimkeung@naver.com', '1987', '$2y$10$aXUeB6zFYIjcWHBL2OdP9uKW2WMJUUCCKxA0ijlxRGzIb/q.5dBZG', '1987', 'F', '10', '30', '13', '24', '11', '01083832083', 'N', '2016-12-29 15:17:03', '2016-12-29 15:17:03');
 /*!40000 ALTER TABLE `tbl_member` ENABLE KEYS */;
 
 -- 테이블 meeting.tbl_member_popular 구조 내보내기
+DROP TABLE IF EXISTS `tbl_member_popular`;
 CREATE TABLE IF NOT EXISTS `tbl_member_popular` (
 	`p_id` int(10) unsigned DEFAULT NULL,
 	`p_point` int(10) unsigned DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='인기도';
 
--- 테이블 데이터 meeting.tbl_member_popular:~0 rows (대략적) 내보내기
+-- 테이블 데이터 meeting.tbl_member_popular:~100 rows (대략적) 내보내기
 DELETE FROM `tbl_member_popular`;
 /*!40000 ALTER TABLE `tbl_member_popular` DISABLE KEYS */;
 INSERT INTO `tbl_member_popular` (`p_id`, `p_point`) VALUES
@@ -376,7 +399,7 @@ INSERT INTO `tbl_member_popular` (`p_id`, `p_point`) VALUES
 	(60, 1),
 	(61, 1),
 	(62, 1),
-	(63, 1),
+	(63, 2),
 	(64, 1),
 	(65, 1),
 	(66, 1),
@@ -420,6 +443,7 @@ INSERT INTO `tbl_member_popular` (`p_id`, `p_point`) VALUES
 /*!40000 ALTER TABLE `tbl_member_popular` ENABLE KEYS */;
 
 -- 테이블 meeting.tbl_member_weight 구조 내보내기
+DROP TABLE IF EXISTS `tbl_member_weight`;
 CREATE TABLE IF NOT EXISTS `tbl_member_weight` (
 	`w_id` int(10) NOT NULL,
 	`w_item` varchar(10) NOT NULL,
@@ -427,7 +451,7 @@ CREATE TABLE IF NOT EXISTS `tbl_member_weight` (
 	PRIMARY KEY (`w_id`,`w_item`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='회원별 가중치';
 
--- 테이블 데이터 meeting.tbl_member_weight:~500 rows (대략적) 내보내기
+-- 테이블 데이터 meeting.tbl_member_weight:~505 rows (대략적) 내보내기
 DELETE FROM `tbl_member_weight`;
 /*!40000 ALTER TABLE `tbl_member_weight` DISABLE KEYS */;
 INSERT INTO `tbl_member_weight` (`w_id`, `w_item`, `w_point`) VALUES
@@ -930,10 +954,16 @@ INSERT INTO `tbl_member_weight` (`w_id`, `w_item`, `w_point`) VALUES
 	(100, 'education', 1),
 	(100, 'job', 2),
 	(100, 'location', 4),
-	(100, 'salary', 1);
+	(100, 'salary', 1),
+	(101, 'age', 1),
+	(101, 'education', 4),
+	(101, 'job', 8),
+	(101, 'location', 10),
+	(101, 'salary', 1);
 /*!40000 ALTER TABLE `tbl_member_weight` ENABLE KEYS */;
 
 -- 테이블 meeting.tbl_weight 구조 내보내기
+DROP TABLE IF EXISTS `tbl_weight`;
 CREATE TABLE IF NOT EXISTS `tbl_weight` (
 	`seq` int(10) NOT NULL AUTO_INCREMENT,
 	`w_item` varchar(10) NOT NULL,
