@@ -545,9 +545,8 @@
                                 WHERE  ( sender_id = :id 
                                           OR receiver_id = :id ) 
                                        AND status = '$flag') 
-                GROUP  BY a.id 
             ";
-
+            
             $this->query($sql);
             $this->bind(":id", $_SESSION['m_id']);
 
@@ -575,7 +574,6 @@
                                 FROM   tbl_good_feel 
                                 WHERE  receiver_id = :id 
                                 AND status = '$flag') 
-                GROUP  BY a.id             
             ";
 
             $this->query($sql);
@@ -605,7 +603,6 @@
                                 FROM   tbl_good_feel 
                                 WHERE  sender_id = :id 
                                 AND status = '$flag') 
-                GROUP  BY a.id                  
             ";
 
             $this->query($sql);
