@@ -351,8 +351,10 @@
                 $m_sex = "M";
             }
 
+            $sql_mode = $this->isMySQL();
+
             $sql = "
-                SET sql_mode = '';
+                $sql_mode
                 select   w_id
                         ,d.sender_id
                         ,d.status
@@ -379,7 +381,7 @@
                 order by w_point desc
                 limit 3;
             ";
-            var_dump($sql) or die();
+
             $this->query($sql);
 
             return $this->resultset($sql);
@@ -479,8 +481,10 @@
                 $condition .= " and salary = {$params['salary']}";
             }
 
+            $sql_mode = $this->isMySQL();
+
             $sql = "
-                SET sql_mode = '';
+                $sql_mode
                 select  a.id
                         ,d.sender_id
                         ,d.status
@@ -524,8 +528,10 @@
 
         public function getMatchingList($flag)
         {
+            $sql_mode = $this->isMySQL();
+
             $sql = "
-                SET sql_mode = '';
+                $sql_mode
                 SELECT a.id, 
                        a.name, 
                        a.birth_year, 
@@ -559,8 +565,10 @@
 
         public function receiveGoodFeelList($flag)
         {
+            $sql_mode = $this->isMySQL();
+
             $sql = "
-                SET sql_mode = '';
+                $sql_mode
                 SELECT a.id, 
                        a.name, 
                        a.birth_year, 
@@ -590,8 +598,10 @@
 
         public function sendGoodFeelList($flag)
         {
+            $sql_mode = $this->isMySQL();
+
             $sql = "
-                SET sql_mode = '';
+                $sql_mode
                 SELECT a.id, 
                        a.name, 
                        a.birth_year, 
@@ -888,6 +898,11 @@
 
             return true;
         }
+
+        public function isMySQL()
+        {
+            MYSQL ? $mode = "SET sql_mode = '';" : $mode = "";
+
+            return $mode;
+        }
     }
-
-
