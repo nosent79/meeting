@@ -71,7 +71,7 @@
                 <td><?= $list['p_point'] ?></td>
                 <td>
                     <?php
-                    if ($list['cnt'] == 0) {
+                        if ($list['cnt'] == 0) {
                     ?>
                     <button class="_assess button" g_id="<?= $list['id'] ?>" g_name="<?= $list['name'] ?>">평가</button>
                 </td>

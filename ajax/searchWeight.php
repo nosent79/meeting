@@ -1,23 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: 최진욱
- * Date: 2016-12-29
- * Time: 오전 10:18
- */
+    /**
+     * Created by PhpStorm.
+     * User: 최진욱
+     * Date: 2016-12-29
+     * Time: 오전 10:18
+     */
     require_once "../Database.php";
-
     $db = new Database();
 
-    $info = [
-        'ages'     => $_POST['ages'],
-        'education'   => $_POST['education'],
-        'location'      => $_POST['location'],
-        'job'           => $_POST['job'],
-        'salary'        => $_POST['salary'],
-    ];
-
-    $data = $db->searchMember($info);
+    $data = $db->searchWeight($_POST['items']);
 
     if (count($data) > 0) {
 

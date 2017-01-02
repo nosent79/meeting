@@ -44,9 +44,22 @@
 
     function redirectSiteURLwithAlert($url, $msg)
     {
-        echo "<script>alert($msg)</script>";
-        header("Location: ". $url, true, 301);
-        exit;
+        echo "
+            <script>
+                alert($msg);
+                location.replace($url);
+            </script>
+        ";
+    }
+
+    function closePopupAndAlert($msg)
+    {
+        echo "
+            <script>
+                alert('$msg');
+                self.close();
+            </script>
+        ";
     }
 
     function getAges($year) {

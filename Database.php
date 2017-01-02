@@ -150,6 +150,15 @@
             return $this->single();
         }
 
+        // 코드 항목 반환
+        public function getCodeList()
+        {
+            $sql = "select code from tbl_code group by code";
+            $this->query($sql);
+
+            return $this->resultset($sql);
+        }
+
         /**
          * 항목별 가중치 계산
          * 
@@ -646,6 +655,72 @@
             return $this->rowCount();
         }
 
+        public function insertWeightItems($params)
+        {
+            $size = count($params['item']);
+
+            for ($i = 0, $j=$size; $j > $i; $i++) {
+
+//                echo $params['item'][$i] ." | " . $params['range'][$i] . " | " . $params['point'][$i];
+
+                $sql = " insert into tbl_weight ( w_item, ranges, point ) values ( :w_item, :range, :point )";
+                $this->query($sql);
+                $this->bind(":w_item", $params['item'][$i]);
+                $this->bind(":range", $params['range'][$i]);
+                $this->bind(":point", $params['point'][$i]);
+                $this->execute();
+
+            }
+//            return $this->rowCount();
+        }
+
+        public function searchWeight($w_item)
+        {
+            $sql = "
+                select   seq
+                        ,w_item
+                        ,ranges
+                        ,point
+                from    tbl_weight
+                where    w_item = :w_item
+            ";
+
+            $this->query($sql);
+            $this->bind(":w_item", $w_item);
+
+            return $this->resultset($sql);
+        }
+
+        public function deleteWeightItem($seq)
+        {
+            $sql = "delete from tbl_weight where seq = :seq";
+
+            $this->query($sql);
+            $this->bind(":seq", $seq);
+            $this->execute();
+
+            return $this->rowCount();
+        }
+
+        public function updateWeightItem($params)
+        {
+            $sql = "
+                update tbl_weight set
+                        w_item = :w_item,
+                        ranges = :ranges,
+                        point = :point
+                where seq = :seq
+            ";
+
+            $this->query($sql);
+            $this->bind(":w_item", $params['w_item']);
+            $this->bind(":ranges", $params['ranges']);
+            $this->bind(":point", $params['point']);
+            $this->bind(":seq", $params['w_item']);
+            $this->execute();
+
+            return $this->rowCount();
+        }
 
         // ----------------------------------------------------------------------------------------------------
         // -- 아래는 단축URL 관련 함수

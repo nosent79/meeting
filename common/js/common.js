@@ -39,6 +39,9 @@
 
     }
 
+
+
+
 $(document).ready(function() {
     $('.inputLongUrlBox').each(function() {
         $(this).data('defaultValue', '긴 주소를 입력하세요');
@@ -57,5 +60,4 @@ $(document).ready(function() {
                 $(this).removeClass('focusIn');
             })
     });
-
 });
