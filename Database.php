@@ -554,7 +554,7 @@
                                 WHERE  ( sender_id = :id 
                                           OR receiver_id = :id ) 
                                        AND status = '$flag') 
-                GROUP  BY a.id                                        
+                GROUP  BY a.id
             ";
             
             $this->query($sql);
@@ -901,7 +901,7 @@
 
         public function isMySQL()
         {
-            MYSQL ? $mode = "SET sql_mode = '';" : $mode = "";
+            MYSQL ? $mode = "SET sql_mode = '';" : $mode = '';
 
             return $mode;
         }
