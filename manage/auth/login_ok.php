@@ -6,7 +6,6 @@
  * Time: 오전 11:03
  */
     require_once "../../Database.php";
-    require_once "../../config/config.php";
 
     $db = new Database();
 
@@ -18,11 +17,11 @@
     $admin = $db->getAdminInfo($info);
 
     if ($admin === null) {
-        header("Location: ". SITE_URL, true, 301);
+        redirectSiteURL(SITE_URL.SITE_PORT."/manage/auth/login.php");
     }
 
     $_SESSION['admin_id'] = $admin['admin_id'];
     $_SESSION['admin_nm'] = $admin['admin_nm'];
 
-    header("Location: ../surl_list.php", true, 301);
+    redirectSiteURL(SITE_URL.SITE_PORT."/manage/index.php");
 

@@ -1,9 +1,8 @@
 <?php
-    require_once "../../config/config.php";
-    require_once "../../config/function.php";
+    require_once "../../Database.php";
 
     if(isAdmin()) {
-        redirectSiteURL(SITE_URL . "manage/surl_list.php");
+        redirectSiteURL(SITE_URL.SITE_PORT . "/manage/index.php");
     }
 ?>
 

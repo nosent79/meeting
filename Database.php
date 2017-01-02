@@ -532,29 +532,33 @@
 
             $sql = "
                 $sql_mode
-                SELECT a.id, 
-                       a.name, 
-                       a.birth_year, 
-                       a.cellphone, 
-                       a.email, 
-                       fnCodeNm('location', a.location)   AS location, 
-                       fnCodeNm('education', a.education) AS education, 
-                       fnCodeNm('job', a.job)             AS job, 
-                       fnCodeNm('salary', a.salary)       AS salary, 
-                       fnCodeNm('hobby', a.hobby)         AS hobby, 
-                       p_point 
-                FROM   tbl_member a 
-                       LEFT JOIN tbl_member_popular c 
-                              ON a.id = c.p_id 
-                WHERE  a.id IN (SELECT CASE 
-                                         WHEN sender_id = :id THEN receiver_id 
-                                         ELSE sender_id 
-                                       end id 
-                                FROM   tbl_good_feel 
-                                WHERE  ( sender_id = :id 
-                                          OR receiver_id = :id ) 
-                                       AND status = '$flag') 
-                GROUP  BY a.id
+                SELECT a.id,
+                       a.name,
+                       a.birth_year,
+                       a.cellphone,
+                       a.email,
+                       fnCodeNm('location', a.location)   AS location,
+                       fnCodeNm('education', a.education) AS education,
+                       fnCodeNm('job', a.job)             AS job,
+                       fnCodeNm('salary', a.salary)       AS salary,
+                       fnCodeNm('hobby', a.hobby)         AS hobby,
+                       p_point,
+                       Count(d.target_id)                 cnt
+                FROM   tbl_member a
+                       LEFT JOIN tbl_member_popular c
+                              ON a.id = c.p_id
+                       LEFT JOIN tbl_assess d
+                              ON a.id = d.target_id
+                                 AND d.assessor_id = :id
+                WHERE  a.id IN (SELECT CASE
+                                         WHEN sender_id = :id THEN receiver_id
+                                         ELSE sender_id
+                                       end id
+                                FROM   tbl_good_feel
+                                WHERE  ( sender_id = :id
+                                          OR receiver_id = :id )
+                                       AND status = '$flag')
+                GROUP  BY a.id                 
             ";
             
             $this->query($sql);

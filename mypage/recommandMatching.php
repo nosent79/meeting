@@ -49,7 +49,6 @@ if(!isMember()) {
                 if ($member['sender_id']) {
                     $btn_text = "썸타는중";
                     $btn_class = "red";
-                    $btn_disabled = "disabled";
                 }
         ?>
         <tr>
@@ -74,14 +73,21 @@ if(!isMember()) {
         $("._good").click(function() {
             var g_id = $(this).attr('g_id');
 
+            var url = $(this).text() === "썸타는중" ? "<?=SITE_URL.SITE_PORT?>/ajax/cancelGoodFeel.php" : "<?=SITE_URL.SITE_PORT?>/ajax/sendGoodFeel.php";
+
             $.ajax({
                 type: "post",
-                url: "<?=SITE_URL.SITE_PORT?>/ajax/sendGoodFeel.php",
+                url: url,
                 data: {'g_id': g_id},
                 dataType: 'json',
                 success: function(res){
                     if(res.status == 'success') {
-                        $("[g_id="+g_id+"]").addClass('red').attr("disabled", "disabled").text("썸타는중");
+                        if (res.code === "09") {
+                            $("[g_id="+g_id+"]").removeClass('red').addClass('green').text("호감발송");
+                        } else {
+                            $("[g_id="+g_id+"]").removeClass('green').addClass('red').text("썸타는중");
+                        }
+
                     } else {
                         alert("실패했습니다.");
                     }

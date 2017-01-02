@@ -42,13 +42,26 @@
     $weight_info = $db->calculateWeightItems($infos);
 
     // 우선 구현완료 후 트랜잭션 처리
-    $member_id = $db->insertMemberInfo($member_infos);
-    $db->insertMemberWeight($member_id, $weight_info);
-    $db->insertMemberPopular($member_id);
 
-    $_SESSION['m_id'] = $member_id;
-    $_SESSION['m_nm'] = $member_infos['name'];
-    $_SESSION['m_email'] = $member_infos['email'];
+    $db->beginTransaction();
 
-    $msg = "가입이 완료되었습니다.";
-    redirectSiteURLwithAlert(SITE_URL.SITE_PORT, $msg);
+    try {
+        $member_id = $db->insertMemberInfo($member_infos);
+        $db->insertMemberWeight($member_id, $weight_info);
+        $db->insertMemberPopular($member_id);
+
+        $db->endTransaction();
+
+        $_SESSION['m_id'] = $member_id;
+        $_SESSION['m_nm'] = $member_infos['name'];
+        $_SESSION['m_email'] = $member_infos['email'];
+
+        $msg = "가입이 완료되었습니다.";
+        redirectSiteURLwithAlert(SITE_URL.SITE_PORT, $msg);
+
+    } catch (Exception $e) {
+        $db->cancelTransaction();
+
+        var_dump($e) or die();
+    }
+
