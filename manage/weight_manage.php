@@ -127,7 +127,7 @@ if(!isAdmin()) {
                         var html = "";
 
                         for (var i in res.data) {
-                            html += "<tr>";
+                            html += "<tr id='seq_"+res.data[i].seq+"'>";
                             html += "    <td><input type='checkbox' name='seq[]' value='"+res.data[i].seq+"' /></td>";
                             html += "    <td>" + res.data[i].w_item + "</td>";
                             html += "    <td><input type='text' name='ranges[]' value='" + res.data[i].ranges + "' /></td>";
@@ -154,15 +154,19 @@ if(!isAdmin()) {
         });
     }).on("click", '._modWeight', function(e) {
         var seq = $(this).attr('seq');
+        var ranges = $("#seq_"+seq).children().find("input[name='ranges[]']").val();
+        var point = $("#seq_"+seq).children().find("input[name='point[]']").val();
+
+        var url = "<?=SITE_URL.SITE_PORT?>/ajax/updateWeightItem.php";
+
         $.ajax({
             type: "post",
             url: url,
-            data: {'seq': seq},
+            data: {'seq': seq, 'ranges':ranges, 'point':point},
             dataType: 'json',
             success: function(res){
                 if(res.status == 'success') {
-                    //$("[g_id="+g_id+"]").parent().html("거절하였습니다.");
-                    alert("삭제완료");
+                    alert("수정되었습니다.");
                 } else {
                     alert("실패했습니다.");
                 }
@@ -179,8 +183,8 @@ if(!isAdmin()) {
             dataType: 'json',
             success: function(res){
                 if(res.status == 'success') {
-//                    $("[g_id="+g_id+"]").parent().html("거절하였습니다.");
-                    alert("삭제완료");
+                    $("#seq_"+seq).remove();
+                    alert("삭제되었습니다.");
                 } else {
                     alert("실패했습니다.");
                 }

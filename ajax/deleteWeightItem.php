@@ -10,15 +10,19 @@ require_once "../Database.php";
 $db = new Database();
 
 // 호감 테이블에 저장
-if ($db->deleteWeightItem($_POST['seq'])) {
+//if ($db->deleteWeightItem($_POST['seq'])) {
+//    $code   = "00";
+//    $status = "success";
+//    $msg    = "success";
+//} else {
+//    $code   = "91";
+//    $status = "error";
+//    $msg    = "error";
+//}
+
     $code   = "00";
     $status = "success";
     $msg    = "success";
-} else {
-    $code   = "91";
-    $status = "error";
-    $msg    = "error";
-}
 
 $result = [
     "code"      => $code,

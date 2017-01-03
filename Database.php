@@ -706,17 +706,15 @@
         {
             $sql = "
                 update tbl_weight set
-                        w_item = :w_item,
                         ranges = :ranges,
                         point = :point
                 where seq = :seq
             ";
 
             $this->query($sql);
-            $this->bind(":w_item", $params['w_item']);
             $this->bind(":ranges", $params['ranges']);
             $this->bind(":point", $params['point']);
-            $this->bind(":seq", $params['w_item']);
+            $this->bind(":seq", $params['seq']);
             $this->execute();
 
             return $this->rowCount();

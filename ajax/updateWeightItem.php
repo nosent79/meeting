@@ -10,7 +10,7 @@
     $db = new Database();
 
     $params = [
-        'w_item' => $_POST['w_item'],
+        'seq' => $_POST['seq'],
         'ranges' => $_POST['ranges'],
         'point' => $_POST['point'],
     ];
